@@ -12,7 +12,7 @@ window.__ModuleLoader__.load({
     const { createElement: h, useEffect, useMemo, useRef, useState, useSyncExternalStore } = React
 
     exports.inject = [
-      'slots', 'sessions', 'workspaces', 'locale', 'remote', 'remote.directoryPicker', 'layout',
+      'slots', 'sessions', 'workspaces', 'uiWorkspace', 'locale', 'remote', 'remote.directoryPicker', 'layout',
     ]
 
     // Official ui-workspace copy from deepseek-harness 4e84901e6471b79ec0338099867ebb4606d12bb5.

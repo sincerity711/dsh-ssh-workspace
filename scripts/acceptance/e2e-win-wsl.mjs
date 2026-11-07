@@ -589,8 +589,13 @@ async function runBrowserChecks() {
       await page.waitForTimeout(1000)
       const visible = await page.locator('iframe').first().evaluate(frame => getComputedStyle(frame).display !== 'none').catch(() => false)
       if (visible) throw new Error('remote iframe still visible after Local click')
+      const composer = page.locator('[contenteditable="true"]').first()
+      await composer.waitFor({ state: 'visible', timeout: 10000 })
+      await composer.fill('Local composer acceptance draft')
+      if ((await composer.innerText()) !== 'Local composer acceptance draft') throw new Error('local composer did not accept the draft after switching back')
+      await composer.fill('')
       await page.screenshot({ path: join(artifactDir, '03-local-restored.png'), fullPage: true })
-      return 'iframe hidden after Local click'
+      return 'iframe hidden and local composer accepts a draft after Local click'
     })
     await item('P0-PLUGIN-004', 'local explorer not polluted', async () => {
       const body = await page.locator('body').innerText()

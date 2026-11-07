@@ -168,7 +168,7 @@
         useWorkspaces: props.useWorkspaces,
         useDirectoryFlow: props.useDirectoryFlow,
         renderSlot: props.renderSlot,
-        directoryFlowSlot: 'sidebar.workspaces.directoryFlow',
+        directoryFlowSlot: 'dsh-ssh-workspace.sidebar.directoryFlow',
       })
       return h(React.Fragment, null,
         h(OfficialWorkspace.WorkspaceBrowser, {
@@ -408,7 +408,7 @@
           ),
           message && h('div', { className: 'rd-addError', role: 'alert' }, message)
         ),
-        props.renderSlot && props.renderSlot(props.directoryFlowSlot || 'conversation.hero.workspace.directoryFlow', localFlowOwner)
+        props.renderSlot && props.renderSlot(props.directoryFlowSlot || 'dsh-ssh-workspace.hero.directoryFlow', localFlowOwner)
       )
     }
 
