@@ -113,7 +113,7 @@
     const useRemote = (selector) => useSyncExternalStore(store.subscribe, () => selector(store.getSnapshot()))
     const remoteBridges = new Map()
 
-    function closeRemoteBridge(sourceId, reason = new Error('remote bridge closed')) {
+    function closeRemoteBridge(sourceId, reason = new Error(remoteT('remote bridge closed'))) {
       const bridge = remoteBridges.get(sourceId)
       if (bridge === undefined) return
       remoteBridges.delete(sourceId)
@@ -184,8 +184,8 @@
 
     async function remoteRpc(sourceId, method, payload = {}, signal) {
       const bridge = remoteBridges.get(sourceId)
-      if (bridge === undefined || !bridge.ready) throw new Error(`remote bridge for ${sourceId} is not ready`)
-      if (!bridge.capabilities.has(method)) throw new Error(`remote bridge for ${sourceId} does not support ${method}`)
+      if (bridge === undefined || !bridge.ready) throw new Error(remoteT('remote bridge for {name} is not ready', { name: sourceId }))
+      if (!bridge.capabilities.has(method)) throw new Error(remoteT('remote bridge for {name} does not support {method}', { name: sourceId, method }))
       if (signal?.aborted) throw signal.reason || new Error('remote request aborted')
       const requestId = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`
       return await new Promise((resolve, reject) => {
@@ -239,7 +239,7 @@
       const homePath = String(home || '')
       if (homePath !== '' && (current === homePath || current.startsWith(`${homePath}/`))) {
         const relative = current === homePath ? [] : current.slice(homePath.length + 1).split('/').filter(Boolean)
-        const items = [{ label: 'Home', path: homePath }]
+        const items = [{ label: remoteT('Home'), path: homePath }]
         const base = pathSegments(homePath)
         relative.forEach((part, index) => items.push({ label: part, path: joinPosix([...base, ...relative.slice(0, index + 1)]) }))
         return items
@@ -306,13 +306,13 @@
       const archived = new Set(snapshot.workspaces?.archivedSessionIds || [])
       return (snapshot.workspaces?.items || []).map(ws => ({
         ...ws,
-        title: ws.title || ws.path || 'Workspace',
+        title: ws.title || ws.path || remoteT('Workspace'),
         sessions: (ws.sessionIds || []).filter(id => !archived.has(id)).map(id => byId.get(id)).filter(Boolean),
       }))
     }
 
     function titleOfSession(row) {
-      return row?.displayTitle || row?.title || row?.projections?.values?.title || row?.cwd?.split(/[\\/]/).pop() || row?.sessionId || 'Untitled session'
+      return row?.displayTitle || row?.title || row?.projections?.values?.title || row?.cwd?.split(/[\\/]/).pop() || row?.sessionId || remoteT('Untitled session')
     }
 
     function sessionUpdatedAt(row) {

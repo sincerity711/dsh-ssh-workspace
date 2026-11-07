@@ -15,8 +15,7 @@ const containerEntrypoint = await readFile('scripts/acceptance/container/entrypo
 
 const requiredClientNeedles = [
   'window.__dshRemoteDesktop',
-  'OfficialWorkspace.UiWorkspaceService',
-  'ctx.slots.provideRoot',
+  "ctx.get('uiWorkspace')",
   'uiWorkspace.openSession',
   'const hostInfo =',
   'openRemoteSession',
@@ -169,7 +168,7 @@ for (const source of [localClient, companionClient]) {
   if (source.includes('@deepseek-ai/dsh-client-runtime')) throw new Error('removed dsh-client-runtime dependency remains')
 }
 
-if (!localPatch.includes('- id: ui-workspace\n  disabled: true')) throw new Error('remote desktop must own its directory-flow declarations')
+if (/- id: ui-workspace\s+disabled: true/.test(localPatch)) throw new Error('native workspace navigation must remain enabled')
 
 
 const requiredContainerScripts = [

@@ -17,10 +17,7 @@
       return { sourceId: rest.slice(0, split), id: rest.slice(split + REMOTE_ID_SEPARATOR.length) }
     }
     function workspaceT(key, args = {}) {
-      const table = OfficialWorkspace.en || {}
-      let text = table[key] || key
-      for (const [name, value] of Object.entries(args)) text = text.replaceAll(`{${name}}`, String(value))
-      return text
+      return workspaceTranslate(key, args)
     }
     function officialSessionSummary(row, id, sourceKind, sourceId, rawSessionId, remoteMarker) {
       const projectionValues = row.projectionValues || row.projections?.values
@@ -45,6 +42,7 @@
       }
     }
     function OfficialWorkspaceForkBrowser(props) {
+      useRemoteLocale()
       const remote = useRemote(s => s)
       const [addAnchor, setAddAnchor] = useState(null)
       const addButtonRef = useMemo(() => ({ current: addAnchor }), [addAnchor])
@@ -114,7 +112,7 @@
                 sourceKind: 'remote',
                 sourceId: source.id,
                 remoteMarker: { id: source.id, label: source.label, state: source.state || 'connected', color: remoteHostColor(source.id) },
-                title: ws.title || ws.path || 'Workspace',
+                title: ws.title || ws.path || remoteT("Workspace"),
                 createdAt: ws.createdAt || new Date(0).toISOString(),
                 sessionIds: (ws.sessions || []).map(row => rowSessionId(row)).filter(Boolean).map(id => remoteKey(source.id, id)),
               })
@@ -168,7 +166,7 @@
         useWorkspaces: props.useWorkspaces,
         useDirectoryFlow: props.useDirectoryFlow,
         renderSlot: props.renderSlot,
-        directoryFlowSlot: 'sidebar.workspaces.directoryFlow',
+        directoryFlowSlot: 'dsh-ssh-workspace.sidebar.directoryFlow',
       })
       return h(React.Fragment, null,
         h(OfficialWorkspace.WorkspaceBrowser, {
@@ -209,10 +207,10 @@
             const remoteId = decodeWorkspace(workspaceId)
             const beforeRemoteId = decodeWorkspace(beforeWorkspaceId)
             if (remoteId) {
-              if (beforeWorkspaceId !== undefined && beforeRemoteId?.sourceId !== remoteId.sourceId) throw new Error('Cannot reorder remote workspaces across sources')
+              if (beforeWorkspaceId !== undefined && beforeRemoteId?.sourceId !== remoteId.sourceId) throw new Error(remoteT('Cannot reorder remote workspaces across sources'))
               await insertRemoteWorkspaceBefore(remoteId.sourceId, remoteId.id, beforeRemoteId?.id)
             } else if (beforeRemoteId === null) await props.insertWorkspaceBefore?.(workspaceId, beforeWorkspaceId)
-            else throw new Error('Cannot reorder local workspaces into a remote source')
+            else throw new Error(remoteT('Cannot reorder local workspaces into a remote source'))
           },
           archiveSession: async sessionId => {
             const remoteId = decodeSession(sessionId)
@@ -224,7 +222,7 @@
             const sessionRemoteId = decodeSession(sessionId)
             const beforeRemoteId = decodeSession(beforeSessionId)
             if (workspaceRemoteId || sessionRemoteId || beforeRemoteId) {
-              if (!workspaceRemoteId || !sessionRemoteId || workspaceRemoteId.sourceId !== sessionRemoteId.sourceId || (beforeSessionId !== undefined && beforeRemoteId?.sourceId !== workspaceRemoteId.sourceId)) throw new Error('Cannot reorder sessions across sources')
+              if (!workspaceRemoteId || !sessionRemoteId || workspaceRemoteId.sourceId !== sessionRemoteId.sourceId || (beforeSessionId !== undefined && beforeRemoteId?.sourceId !== workspaceRemoteId.sourceId)) throw new Error(remoteT('Cannot reorder sessions across sources'))
               await insertRemoteSessionBefore(workspaceRemoteId.sourceId, workspaceRemoteId.id, sessionRemoteId.id, beforeRemoteId?.id)
             } else await props.insertSessionBefore?.(workspaceId, sessionId, beforeSessionId)
           },
@@ -241,6 +239,7 @@
     }
 
     function WorkspaceAddSplitter(props) {
+      useRemoteLocale()
       const remote = useRemote(s => s)
       const localWorkspaces = props.useWorkspaces(s => s.items)
       const [splitterOpen, setSplitterOpen] = useState(false)
@@ -267,17 +266,17 @@
       const menuItems = [
         ...localWorkspaces.map(ws => ({
           id: `local:${ws.workspaceId}`,
-          label: ws.title || ws.path || 'Workspace',
+          label: ws.title || ws.path || remoteT("Workspace"),
           icon: h(IconFolderCloseRegular, { size: 16 }),
         })),
         ...(remoteWorkspaceRows.length > 0 ? [{ type: 'separator', id: 'remote-separator' }] : []),
         ...remoteWorkspaceRows.map(({ source, workspace }) => ({
           id: `remote:${source.id}:${workspace.workspaceId}`,
-          label: h('span', { className: 'rd-hostButtonLabel' }, workspace.title || workspace.path || 'Workspace'),
+          label: h('span', { className: 'rd-hostButtonLabel' }, workspace.title || workspace.path || remoteT("Workspace")),
           icon: h(IconFolderCloseRegular, { size: 16 }),
         })),
       ]
-      const footerItems = [{ id: 'add-workspace', label: 'Add workspace…', icon: h(IconProjectAddOutlineRegular, { size: 16 }) }]
+      const footerItems = [{ id: 'add-workspace', label: remoteT("Add workspace…"), icon: h(IconProjectAddOutlineRegular, { size: 16 }) }]
       // Picker rows use source-qualified ids so local and remote Workspace ids
       // cannot collide. The conversation owner still reports its local
       // selection as the raw Workspace id, so qualify it before handing it to
@@ -385,34 +384,35 @@
         h(Modal, {
           open: splitterOpen,
           onClose: () => setSplitterOpen(false),
-          title: 'Add workspace',
-          closeLabel: 'Close',
-          description: 'Choose where the workspace should live.',
-          footer: h(Button, { variant: 'outline', onClick: () => setSplitterOpen(false) }, 'Cancel'),
+          title: remoteT("Add workspace"),
+          closeLabel: remoteT("Close"),
+          description: remoteT("Choose where the workspace should live."),
+          footer: h(Button, { variant: 'outline', onClick: () => setSplitterOpen(false) }, remoteT("Cancel")),
         },
           h('div', { className: 'rd-addChoiceGrid', 'data-rd-add-workspace-splitter': 'true' },
             h('button', { type: 'button', className: 'rd-addChoice', onClick: openLocalFlow, 'data-rd-add-local': 'true' },
               h('span', { className: 'rd-addChoiceIcon' }, h(IconFolderOpenOutlineRegular, { size: 16 })),
               h('span', null,
-                h('span', { className: 'rd-addChoiceTitle' }, 'Local workspace'),
-                h('span', { className: 'rd-addChoiceDesc' }, 'Use the official picker for this DSH instance.')
+                h('span', { className: 'rd-addChoiceTitle' }, remoteT("Local workspace")),
+                h('span', { className: 'rd-addChoiceDesc' }, remoteT("Use the official picker for this DSH instance."))
               )
             ),
             h('button', { type: 'button', className: 'rd-addChoice', onClick: openRemoteFlow, 'data-rd-add-remote': 'true' },
               h('span', { className: 'rd-addChoiceIcon' }, h(IconProjectAddOutlineRegular, { size: 16 })),
               h('span', null,
-                h('span', { className: 'rd-addChoiceTitle' }, 'Remote workspace'),
-                h('span', { className: 'rd-addChoiceDesc' }, isRemoteDesktopIframe() ? 'Ask the main host to create one on a connected remote.' : 'Create one on a connected remote host.')
+                h('span', { className: 'rd-addChoiceTitle' }, remoteT("Remote workspace")),
+                h('span', { className: 'rd-addChoiceDesc' }, isRemoteDesktopIframe() ? remoteT("Ask the main host to create one on a connected remote.") : remoteT("Create one on a connected remote host."))
               )
             )
           ),
-          message && h('div', { className: 'rd-addError', role: 'alert' }, message)
+          message && h('div', { className: 'rd-addError', role: 'alert' }, remoteT(message))
         ),
-        props.renderSlot && props.renderSlot(props.directoryFlowSlot || 'conversation.hero.workspace.directoryFlow', localFlowOwner)
+        props.renderSlot && props.renderSlot(props.directoryFlowSlot || 'dsh-ssh-workspace.hero.directoryFlow', localFlowOwner)
       )
     }
 
     function RemoteSetupModal() {
+      useRemoteLocale()
       const remote = useRemote(s => s)
       const [hostId, setHostId] = useState('')
       const [busy, setBusy] = useState(false)
@@ -485,28 +485,28 @@
         }
       }
       const hostItems = connected.length === 0
-        ? [{ id: 'no-host', label: 'No connected hosts', disabled: true }]
+        ? [{ id: 'no-host', label: remoteT("No connected hosts"), disabled: true }]
         : connected.map(source => ({ id: source.id, label: source.label }))
       const breadcrumbs = remoteBreadcrumbs(browse.path, browse.home)
       const browseBusy = browse.status === 'loading'
       return h(Modal, {
         open,
         onClose: () => close('cancelled'),
-        title: 'Add remote workspace',
-        closeLabel: 'Close',
-        description: 'Choose a connected host and browse to the remote folder to use as a workspace.',
+        title: remoteT("Add remote workspace"),
+        closeLabel: remoteT("Close"),
+        description: remoteT("Choose a connected host and browse to the remote folder to use as a workspace."),
         footer: h(React.Fragment, null,
-          h(Button, { variant: 'outline', disabled: busy, onClick: () => close('cancelled') }, 'Cancel'),
-          h(Button, { variant: 'primary', disabled: busy || browseBusy || connected.length === 0 || browse.path === '', onClick: () => void submit(), 'data-rd-add-workspace-submit': 'true' }, busy ? 'Adding…' : 'Create workspace here')
+          h(Button, { variant: 'outline', disabled: busy, onClick: () => close('cancelled') }, remoteT("Cancel")),
+          h(Button, { variant: 'primary', disabled: busy || browseBusy || connected.length === 0 || browse.path === '', onClick: () => void submit(), 'data-rd-add-workspace-submit': 'true' }, busy ? remoteT("Adding…") : remoteT("Create workspace here"))
         ),
       },
         h('div', { 'data-rd-remote-workspace-setup': 'true', 'data-rd-remote-directory-picker': 'true' },
           h('div', { className: 'rd-setupField' },
-            h('div', { className: 'rd-setupLabel' }, 'Host'),
+            h('div', { className: 'rd-setupLabel' }, remoteT("Host")),
             h(Menu, {
               open: hostMenuOpen,
               anchor: h(Button, { variant: 'outline', className: 'rd-hostButton', disabled: busy || connected.length === 0, onClick: () => setHostMenuOpen(value => !value) },
-                h('span', { className: 'rd-hostButtonLabel' }, selected?.label || 'No connected hosts'),
+                h('span', { className: 'rd-hostButtonLabel' }, selected?.label || remoteT("No connected hosts")),
                 h(IconChevronDownOutlineRegular, { size: 14 })
               ),
               items: hostItems,
@@ -515,7 +515,7 @@
               onClose: () => setHostMenuOpen(false),
             })
           ),
-          connected.length === 0 && h('div', { className: 'rd-setupHint' }, 'Connect a host in Settings → Remote Desktop before creating a remote workspace.'),
+          connected.length === 0 && h('div', { className: 'rd-setupHint' }, remoteT("Connect a host in Settings → Remote Desktop before creating a remote workspace.")),
           connected.length > 0 && h('div', { className: 'rd-browsePanel' },
             h('div', { className: 'rd-browseToolbar' },
               h('div', { className: 'rd-breadcrumbs', 'data-rd-remote-breadcrumbs': 'true' },
@@ -524,15 +524,15 @@
                   h('button', { type: 'button', className: 'rd-breadcrumbButton', disabled: busy || browseBusy, title: item.path, onClick: () => browseTo(item.path), 'data-rd-breadcrumb-path': item.path }, item.label)
                 ))
               ),
-              h(Button, { variant: showHidden ? 'primary' : 'outline', className: 'rd-hiddenToggle', disabled: busy || browseBusy, onClick: () => { const next = !showHidden; setShowHidden(next); browseTo(browse.path || undefined, next) }, 'data-rd-show-hidden': showHidden ? 'true' : 'false' }, 'Show hidden')
+              h(Button, { variant: showHidden ? 'primary' : 'outline', className: 'rd-hiddenToggle', disabled: busy || browseBusy, onClick: () => { const next = !showHidden; setShowHidden(next); browseTo(browse.path || undefined, next) }, 'data-rd-show-hidden': showHidden ? 'true' : 'false' }, remoteT("Show hidden"))
             ),
             h('div', { className: 'rd-directoryList', 'data-rd-remote-directory-list': 'true' },
-              browseBusy && h('div', { className: 'rd-browseStatus', role: 'status' }, 'Loading remote folders…'),
+              browseBusy && h('div', { className: 'rd-browseStatus', role: 'status' }, remoteT("Loading remote folders…")),
               browse.status === 'error' && h('div', { className: 'rd-browseStatus rd-browseStatusError', role: 'alert' },
-                h('div', null, browse.error || 'Cannot read this directory.'),
-                h(Button, { variant: 'outline', disabled: busy, onClick: () => browseTo(browse.path || undefined), 'data-rd-browse-retry': 'true' }, 'Retry')
+                h('div', null, remoteT(browse.error || 'Cannot read this directory.')),
+                h(Button, { variant: 'outline', disabled: busy, onClick: () => browseTo(browse.path || undefined), 'data-rd-browse-retry': 'true' }, remoteT("Retry"))
               ),
-              browse.status === 'ready' && browse.entries.length === 0 && h('div', { className: 'rd-browseStatus' }, 'No folders in this directory.'),
+              browse.status === 'ready' && browse.entries.length === 0 && h('div', { className: 'rd-browseStatus' }, remoteT("No folders in this directory.")),
               browse.status === 'ready' && browse.entries.map(entry => h('button', { key: entry.path, type: 'button', className: 'rd-directoryRow', disabled: busy, onClick: () => browseTo(entry.path), 'data-rd-directory-path': entry.path },
                 h(IconFolderCloseRegular, { size: 16 }),
                 h('span', { className: 'rd-directoryName' }, entry.name)
@@ -540,7 +540,7 @@
             )
           ),
           browse.path && h('div', { className: 'rd-currentPath', 'data-rd-selected-remote-path': browse.path }, browse.path),
-          error && h('div', { className: 'rd-addError', role: 'alert' }, error)
+          error && h('div', { className: 'rd-addError', role: 'alert' }, remoteT(error))
         )
       )
     }

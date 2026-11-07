@@ -1,7 +1,4 @@
-# Replace workspace UI and provide its current navigation policy.
-- id: ui-workspace
-  disabled: true
-
+# Keep the native navigation service; replace only its workspace UI slots.
 - insert:
     - id: remote-desktop
       name: dsh-ssh-workspace

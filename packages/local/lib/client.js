@@ -12,7 +12,7 @@ window.__ModuleLoader__.load({
     const { createElement: h, useEffect, useMemo, useRef, useState, useSyncExternalStore } = React
 
     exports.inject = [
-      'slots', 'sessions', 'workspaces', 'locale', 'remote', 'remote.directoryPicker', 'layout',
+      'slots', 'sessions', 'workspaces', 'uiWorkspace', 'locale', 'remote', 'remote.directoryPicker', 'layout',
     ]
 
     // Official ui-workspace copy from deepseek-harness 4e84901e6471b79ec0338099867ebb4606d12bb5.
@@ -759,10 +759,10 @@ window.__ModuleLoader__.load({
       //#endregion
       //#region \0dsh-css:/Users/i060912/SAPDevelop/dsh/packages/client/ui-workspace/src/client/rows/Rows.module.css.mjs
       const css$2 = ".eysBeG_projectRow,.eysBeG_sessionRow{cursor:pointer;user-select:none;color:var(--dsw-alias-label-primary);border-radius:8px;align-items:center;gap:6px;padding:0 8px;display:flex}.eysBeG_projectRow:hover,.eysBeG_sessionRow:hover,.eysBeG_sessionRow.eysBeG_selected{background:var(--dsw-alias-interactive-bg-hover)}.eysBeG_searchResultRow{box-sizing:border-box;cursor:pointer;text-align:left;width:100%;min-height:48px;color:var(--dsw-alias-label-primary);background:0 0;border:none;border-radius:8px;flex-direction:column;align-items:stretch;padding:4px 8px;display:flex}.eysBeG_searchResultRow:hover,.eysBeG_searchResultRow.eysBeG_selected{background:var(--dsw-alias-interactive-bg-hover)}.eysBeG_searchResultHeading{align-items:center;min-width:0;display:flex}.eysBeG_searchResultTitle{text-overflow:ellipsis;white-space:nowrap;flex:0 auto;min-width:0;margin-left:4px;font-size:14px;line-height:20px;overflow:hidden}.eysBeG_searchResultMeta{align-items:center;gap:6px;min-width:0;margin-left:20px;display:flex}.eysBeG_searchResultWorkspace,.eysBeG_searchResultSnippet{text-overflow:ellipsis;white-space:nowrap;font-size:12px;line-height:17px;overflow:hidden}.eysBeG_searchResultWorkspace{max-width:40%;color:var(--dsw-alias-label-tertiary);flex:none}.eysBeG_searchResultSnippet{min-width:0;color:var(--dsw-alias-label-secondary);flex:1}.eysBeG_projectRow{box-sizing:border-box;align-items:center;height:34px}.eysBeG_projectRow .eysBeG_rowActions{height:20px}.eysBeG_sessionRow{height:32px;animation:eysBeG_row-in .15s var(--ds-ease-in-out);gap:0}.eysBeG_sessionRow .eysBeG_title{margin:0 6px 0 4px}.eysBeG_flatSessionRowWithoutStatus .eysBeG_title{margin-left:0}@keyframes eysBeG_row-in{0%{opacity:0}}.eysBeG_slot{width:16px;height:20px;color:var(--dsw-alias-label-tertiary);flex:none;justify-content:center;align-items:center;display:inline-flex}.eysBeG_visuallyHidden{clip:rect(0 0 0 0);white-space:nowrap;width:1px;height:1px;position:absolute;overflow:hidden}.eysBeG_folderActive{color:var(--dsw-alias-state-business-primary)}.eysBeG_projectRow .eysBeG_chevron{display:none}.eysBeG_projectRow:hover .eysBeG_chevron{display:inline-flex}.eysBeG_projectRow:hover .eysBeG_folder{display:none}.eysBeG_arrow{transition:transform .15s var(--ds-ease-in-out)}.eysBeG_arrowOpen{transform:rotate(90deg)}.eysBeG_projectText{flex-direction:column;flex:1;gap:2px;min-width:0;display:flex}.eysBeG_title{text-overflow:ellipsis;white-space:nowrap;min-width:0;font-size:14px;line-height:20px;overflow:hidden}.eysBeG_renameInput{border:.5px solid var(--dsw-alias-border-l4);background:var(--dsw-alias-button-elevated-fill);min-width:0;color:inherit;border-radius:4px;outline:none;padding:0 2px;font-size:14px;line-height:20px}.eysBeG_sessionRow .eysBeG_title{flex:1}.eysBeG_meta{text-overflow:ellipsis;white-space:nowrap;color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:20px;overflow:hidden}.eysBeG_time{color:var(--dsw-alias-label-tertiary);flex:none;font-size:12px;line-height:20px}.eysBeG_scheduleIndicator{width:16px;height:20px;color:var(--dsw-alias-label-tertiary);flex:none;justify-content:center;align-items:center;margin-right:6px;display:inline-flex}.eysBeG_searchScheduleIndicator{margin-left:4px;margin-right:0}.eysBeG_dot{flex:none}.eysBeG_rowActions{flex:none;align-items:center;gap:12px;display:none}.eysBeG_projectRow:hover .eysBeG_rowActions,.eysBeG_sessionRow:hover .eysBeG_rowActions,.eysBeG_projectRow.eysBeG_menuOpen .eysBeG_rowActions,.eysBeG_sessionRow.eysBeG_menuOpen .eysBeG_rowActions{display:inline-flex}.eysBeG_sessionRow:hover .eysBeG_time,.eysBeG_sessionRow.eysBeG_menuOpen .eysBeG_time{display:none}.eysBeG_projectRow.eysBeG_menuOpen,.eysBeG_sessionRow.eysBeG_menuOpen{background:var(--dsw-alias-interactive-bg-hover)}.eysBeG_sessionRow.eysBeG_dropBefore,.eysBeG_sessionRow.eysBeG_dropAfter{position:relative}.eysBeG_sessionRow.eysBeG_dropBefore:before,.eysBeG_sessionRow.eysBeG_dropAfter:after{content:\"\";z-index:1;background:linear-gradient(55deg, transparent calc(50% - 1px), var(--dsw-alias-state-business-primary) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)) 0 0 / 5px 7px no-repeat, linear-gradient(125deg, transparent calc(50% - 1px), var(--dsw-alias-state-business-primary) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)) 0 5px / 5px 7px no-repeat, linear-gradient(var(--dsw-alias-state-business-primary) 0 0) 4px 5px / calc(100% - 4px) 2px no-repeat;pointer-events:none;height:12px;position:absolute;left:0;right:4px}.eysBeG_sessionRow.eysBeG_dropBefore:before{top:-7px}.eysBeG_sessionRow.eysBeG_dropAfter:after{bottom:-7px}.eysBeG_hoverContent{flex-direction:column;gap:8px;display:flex}.eysBeG_hoverTitle{color:#fff;overflow-wrap:break-word;font-size:14px;line-height:20px}.eysBeG_hoverPath{color:#cfd3d6;word-break:break-all;font-size:12px;line-height:16px}.eysBeG_hoverTime{color:#cfd3d6;font-size:12px;line-height:16px}.eysBeG_hoverStatus{color:#adb2b8;align-items:center;gap:8px;font-size:12px;line-height:20px;display:flex}.eysBeG_iconButton{cursor:pointer;width:16px;height:16px;color:var(--dsw-alias-label-tertiary);background:0 0;border:none;border-radius:4px;flex:none;justify-content:center;align-items:center;padding:0;display:inline-flex}.eysBeG_iconButton:hover{color:var(--dsw-alias-label-primary)}.eysBeG_chevron{color:var(--dsw-alias-label-caption)}@media (prefers-reduced-motion:reduce){.eysBeG_sessionRow,.eysBeG_arrow{transition:none;animation:none}}";
-      const tagId$2 = "@deepseek-ai/dsh-client-ui-workspace/Rows.module.css";
+      const tagId$2 = "dsh-ssh-workspace/Rows.module.css";
       if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$2) + "]") === null) {
         const tag = document.createElement("style");
-        tag.dataset.plugin = "@deepseek-ai/dsh-client-ui-workspace";
+        tag.dataset.plugin = "dsh-ssh-workspace";
         tag.dataset.pluginCss = tagId$2;
         tag.textContent = css$2;
         document.head.appendChild(tag);
@@ -932,7 +932,7 @@ window.__ModuleLoader__.load({
             }),
             row.remoteMarker !== void 0 && (0, react_jsx_runtime.jsxs)("span", {
               title: row.remoteMarker.label,
-              "aria-label": `Remote host ${row.remoteMarker.label}`,
+              "aria-label": remoteT('Remote host {name}', { name: row.remoteMarker.label }),
               "data-rd-host-marker": row.remoteMarker.id,
               style: { flex: "none", display: "inline-flex", alignItems: "center", gap: 10, color: "var(--dsw-alias-label-tertiary)", fontSize: 12, lineHeight: "20px" },
               children: [(0, react_jsx_runtime.jsx)("span", { children: row.remoteMarker.label }), (0, react_jsx_runtime.jsx)("span", { style: { flex: "none", width: 8, height: 8, borderRadius: 999, background: row.remoteMarker.color } })]
@@ -1261,10 +1261,10 @@ window.__ModuleLoader__.load({
       //#endregion
       //#region \0dsh-css:/Users/i060912/SAPDevelop/dsh/packages/client/ui-workspace/src/client/WorkspacePicker.module.css.mjs
       const css$1 = ".WlOqsq_modalAction{min-width:72px}.WlOqsq_modalError,.WlOqsq_menuStatus{margin-top:8px;font-size:12px;line-height:18px}.WlOqsq_modalError{color:var(--dsw-alias-state-error-primary)}.WlOqsq_menuStatus{color:var(--dsw-alias-label-secondary)}";
-      const tagId$1 = "@deepseek-ai/dsh-client-ui-workspace/WorkspacePicker.module.css";
+      const tagId$1 = "dsh-ssh-workspace/WorkspacePicker.module.css";
       if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
         const tag = document.createElement("style");
-        tag.dataset.plugin = "@deepseek-ai/dsh-client-ui-workspace";
+        tag.dataset.plugin = "dsh-ssh-workspace";
         tag.dataset.pluginCss = tagId$1;
         tag.textContent = css$1;
         document.head.appendChild(tag);
@@ -1422,7 +1422,7 @@ window.__ModuleLoader__.load({
           useWorkspaces,
           createWorkspace,
           useDirectoryFlow,
-          renderDirectoryFlow: (owner) => renderSlot("conversation.hero.workspace.directoryFlow", owner),
+          renderDirectoryFlow: (owner) => renderSlot("dsh-ssh-workspace.hero.directoryFlow", owner),
           selectedId,
           onPick,
           onClose
@@ -1431,10 +1431,10 @@ window.__ModuleLoader__.load({
       //#endregion
       //#region \0dsh-css:/Users/i060912/SAPDevelop/dsh/packages/client/ui-workspace/src/client/rows/WorkspaceBrowser.module.css.mjs
       const css = ".NnloOa_root{--dsh-session-list-edge-inset:var(--dsh-sidebar-inline-padding);--dsh-session-list-scrollbar-width:8px;--dsh-session-list-scrollbar-offset:2px;box-sizing:border-box;min-height:0;padding-right:var(--dsh-session-list-edge-inset);flex-direction:column;flex:1;display:flex}.NnloOa_root.NnloOa_rail{padding-right:0}.NnloOa_iconButton{corner-shape:round;cursor:pointer;width:28px;height:28px;color:var(--dsw-alias-label-secondary);background:0 0;border:none;border-radius:50%;flex:none;justify-content:center;align-items:center;padding:0;display:inline-flex}.NnloOa_iconButton:hover{background:var(--dsw-alias-interactive-bg-hover)}.NnloOa_sectionHeader{box-sizing:border-box;height:36px;color:var(--dsw-alias-label-tertiary);border-radius:12px;flex:none;justify-content:flex-end;align-items:center;gap:4px;margin-bottom:4px;padding-left:4px;display:flex;overflow:hidden}.NnloOa_root:not(.NnloOa_rail) .NnloOa_sectionHeader{margin-top:2px;margin-right:-4px}.NnloOa_sectionLabel{white-space:nowrap;opacity:1;visibility:visible;min-width:0;max-width:45%;transition:max-width .18s var(--ds-ease-in-out), margin-right .18s var(--ds-ease-in-out), opacity .12s var(--ds-ease-in-out), transform .18s var(--ds-ease-in-out), visibility 0s linear;flex:none;line-height:20px;overflow:hidden}.NnloOa_sectionLabelHidden{opacity:0;visibility:hidden;max-width:0;margin-right:-4px;transition-delay:0s,0s,0s,0s,.18s;transform:translate(-4px)}.NnloOa_searchSlot{box-sizing:border-box;min-width:0;max-width:28px;transition:max-width .18s var(--ds-ease-in-out), padding-left .18s var(--ds-ease-in-out);flex:1;align-items:center;margin-left:auto;padding-left:0;display:flex}.NnloOa_searchSlotExpanded{max-width:100%;padding-left:0}.NnloOa_headerActions{opacity:1;visibility:visible;max-width:60px;transition:max-width .18s var(--ds-ease-in-out), opacity .12s var(--ds-ease-in-out), transform .18s var(--ds-ease-in-out), visibility 0s linear;flex:none;align-items:center;gap:4px;display:flex;overflow:hidden}.NnloOa_headerActionsHidden{opacity:0;visibility:hidden;pointer-events:none;max-width:0;transition-delay:0s,0s,0s,.18s;transform:translate(4px)}.NnloOa_search{box-sizing:border-box;corner-shape:round;cursor:text;width:100%;height:28px;color:var(--dsw-alias-label-secondary);transition:width .18s var(--ds-ease-in-out), padding .18s var(--ds-ease-in-out), border-color .18s var(--ds-ease-in-out), background-color .18s var(--ds-ease-in-out);background:0 0;border:none;border-radius:50%;flex:none;align-items:center;gap:0;margin:0;padding:0;display:flex;overflow:hidden}.NnloOa_searchExpanded{border:.5px solid var(--dsw-alias-border-l4);width:calc(100% + 4px);height:30px;color:var(--dsw-alias-label-caption);background:0 0;border-radius:10px;margin-inline:-2px;padding:0 4px 0 0}.NnloOa_searchButton{corner-shape:round;cursor:pointer;width:28px;height:28px;color:inherit;background:0 0;border:none;border-radius:50%;flex:none;justify-content:center;align-items:center;padding:0;display:inline-flex}.NnloOa_searchExpanded .NnloOa_searchButton{width:28px;height:30px}.NnloOa_searchButton:hover{background:var(--dsw-alias-interactive-bg-hover)}.NnloOa_searchExpanded .NnloOa_searchButton:hover{background:0 0}.NnloOa_searchInput{opacity:0;pointer-events:none;width:0;min-width:0;color:var(--dsw-alias-label-primary);transition:opacity .12s var(--ds-ease-in-out);background:0 0;border:none;outline:none;flex:1;font-size:13px;line-height:18px}.NnloOa_searchExpanded .NnloOa_searchInput{opacity:1;pointer-events:auto;margin-left:-2px}.NnloOa_searchInput::placeholder{color:var(--dsw-alias-label-tertiary)}.NnloOa_clearButton{corner-shape:round;cursor:pointer;width:24px;height:24px;color:var(--dsw-alias-label-secondary);background:0 0;border:none;border-radius:50%;flex:none;justify-content:center;align-items:center;padding:0;display:inline-flex}.NnloOa_clearButton:hover{background:var(--dsw-alias-interactive-bg-hover)}.NnloOa_rail .NnloOa_sectionHeader{justify-content:flex-start;gap:0;margin-bottom:12px;padding-left:0}.NnloOa_rail .NnloOa_headerActions{max-width:none}.NnloOa_rail .NnloOa_iconButton{width:36px;height:36px;color:var(--dsw-alias-label-primary)}.NnloOa_rail .NnloOa_search{background:0 0;border-color:#0000;gap:0;width:36px;height:36px;margin:0 0 12px;padding:0}.NnloOa_rail .NnloOa_searchButton{width:36px;height:36px;color:var(--dsw-alias-label-primary)}.NnloOa_rail .NnloOa_searchButton:hover{background:var(--dsw-alias-interactive-bg-hover)}.NnloOa_listArea{min-height:0;margin-left:-4px;margin-right:calc(-1 * var(--dsh-session-list-edge-inset));flex-direction:column;flex:1;padding-left:4px;display:flex;overflow:visible}.NnloOa_rail .NnloOa_listArea{margin-left:0;margin-right:0;padding-left:0}.NnloOa_treeBody{flex-direction:column;flex:1;min-height:0;display:flex;position:relative}.NnloOa_fade{left:0;right:var(--dsh-session-list-edge-inset);background:linear-gradient(to bottom, transparent, var(--dsw-specific-sidebar-fill));pointer-events:none;height:24px;position:absolute;bottom:0}[data-platform='darwin'] .NnloOa_fade{display:none}.NnloOa_wide{animation:NnloOa_wide-in .2s var(--ds-ease-in-out)}@keyframes NnloOa_wide-in{0%{opacity:0}}.NnloOa_list{min-height:0;margin-left:-4px;margin-right:var(--dsh-session-list-scrollbar-offset);padding-left:4px;padding-right:calc(var(--dsh-session-list-edge-inset) - var(--dsh-session-list-scrollbar-width) - var(--dsh-session-list-scrollbar-offset));scrollbar-gutter:stable;flex:1;padding-bottom:16px;overflow-y:auto}.NnloOa_flatList>*+*,.NnloOa_searchTree>[role=treeitem]+[role=treeitem],.NnloOa_groupSection>*+*{margin-top:2px}.NnloOa_searchStatus,.NnloOa_searchWarning{color:var(--dsw-alias-label-tertiary);padding:10px 12px;font-size:12px;line-height:18px}.NnloOa_searchWarning{color:var(--dsw-alias-label-secondary)}.NnloOa_groupSection{position:relative}.NnloOa_groupSection+.NnloOa_groupSection{margin-top:4px}.NnloOa_listTopDropIndicator,.NnloOa_workspaceDropBefore:before,.NnloOa_workspaceDropAfter:after{content:\"\";z-index:1;background:linear-gradient(55deg, transparent calc(50% - 1px), var(--dsw-alias-state-business-primary) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)) 0 0 / 5px 7px no-repeat, linear-gradient(125deg, transparent calc(50% - 1px), var(--dsw-alias-state-business-primary) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px)) 0 5px / 5px 7px no-repeat, linear-gradient(var(--dsw-alias-state-business-primary) 0 0) 4px 5px / calc(100% - 4px) 2px no-repeat;pointer-events:none;height:12px;position:absolute;left:0;right:0}.NnloOa_listTopDropIndicator{top:-8px;left:0;right:var(--dsh-session-list-edge-inset)}.NnloOa_listTopDropActive>.NnloOa_workspaceDropBefore:first-child:before{display:none}.NnloOa_workspaceDropBefore:before{top:-8px}.NnloOa_workspaceDropAfter:after{bottom:-8px}.NnloOa_sessionOverflowButton{cursor:pointer;text-align:left;width:100%;height:28px;color:var(--dsw-alias-label-tertiary);background:0 0;border:none;border-radius:8px;padding:0 12px 0 28px;font-size:12px}.NnloOa_groupSection>.NnloOa_sessionOverflowButton{margin-top:0}.NnloOa_sessionOverflowButton:hover{color:var(--dsw-alias-label-secondary);background:0 0}.NnloOa_empty{color:var(--dsw-alias-label-tertiary);padding:16px 12px;font-size:13px}.NnloOa_renameInput{box-sizing:border-box;border:.5px solid var(--dsw-alias-border-l4);width:100%;height:44px;color:var(--dsw-alias-label-primary);background:0 0;border-radius:22px;outline:none;padding:7px 14px;font-size:14px;font-weight:400;line-height:22px}.NnloOa_renameInput:disabled{color:var(--dsw-alias-label-dimmed)}.NnloOa_renameError{color:var(--dsw-alias-state-error-primary);margin-top:8px;font-size:12px;line-height:18px}.NnloOa_deleteAction:not(:disabled){color:var(--dsw-alias-state-error-primary)}.NnloOa_deleteStatus{color:var(--dsw-alias-label-secondary);font-size:12px;line-height:18px}@media (prefers-reduced-motion:reduce){.NnloOa_wide{animation:none}.NnloOa_search,.NnloOa_sectionLabel,.NnloOa_searchSlot,.NnloOa_searchInput,.NnloOa_headerActions{transition:none}}";
-      const tagId = "@deepseek-ai/dsh-client-ui-workspace/WorkspaceBrowser.module.css";
+      const tagId = "dsh-ssh-workspace/WorkspaceBrowser.module.css";
       if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId) + "]") === null) {
         const tag = document.createElement("style");
-        tag.dataset.plugin = "@deepseek-ai/dsh-client-ui-workspace";
+        tag.dataset.plugin = "dsh-ssh-workspace";
         tag.dataset.pluginCss = tagId;
         tag.textContent = css;
         document.head.appendChild(tag);
@@ -2502,7 +2502,7 @@ window.__ModuleLoader__.load({
                   useWorkspaces,
                   createWorkspace,
                   useDirectoryFlow,
-                  renderDirectoryFlow: (owner) => renderSlot("sidebar.workspaces.directoryFlow", owner),
+                  renderDirectoryFlow: (owner) => renderSlot("dsh-ssh-workspace.sidebar.directoryFlow", owner),
                   addOnly: true,
                   side: "right",
                   onPick: (workspaceId) => {
@@ -2903,6 +2903,101 @@ window.__ModuleLoader__.load({
       */
       return { WorkspaceBrowser, WorkspacePicker, createWorkspaceViewStore, en, zh, UiWorkspaceService }
     })()
+    // English source keys keep unknown Host errors and plugin names intact.
+    const REMOTE_LOCALE_NS = 'dsh-ssh-workspace'
+    const WORKSPACE_LOCALE_NS = 'dsh-ssh-workspace.workspace'
+    const remoteZh = {
+      "Remote Desktop": "远端桌面",
+      "Workspace": "工作区",
+      "Untitled session": "未命名会话",
+      "Home": "主目录",
+      "Add workspace…": "添加工作区…",
+      "Add workspace": "添加工作区",
+      "Close": "关闭",
+      "Cancel": "取消",
+      "Local workspace": "本地工作区",
+      "Remote workspace": "远端工作区",
+      "Choose where the workspace should live.": "选择工作区所在的位置。",
+      "Use the official picker for this DSH instance.": "使用当前 DSH 的文件夹选择器。",
+      "Ask the main host to create one on a connected remote.": "通过主机在已连接的远端创建工作区。",
+      "Create one on a connected remote host.": "在已连接的远端主机上创建工作区。",
+      "Local directory picker is unavailable in this profile.": "当前配置无法使用本地文件夹选择器。",
+      "Remote workspace setup requires the main host bridge.": "创建远端工作区需要主机桥接连接。",
+      "Remote workspace setup timed out.": "创建远端工作区超时。",
+      "Remote workspace setup failed": "创建远端工作区失败",
+      "Cannot reorder remote workspaces across sources": "无法跨主机调整远端工作区顺序",
+      "Cannot reorder local workspaces into a remote source": "无法将本地工作区移动到远端主机",
+      "Cannot reorder sessions across sources": "无法跨主机调整会话顺序",
+      "Connect a remote host before adding a remote workspace.": "请先连接远端主机，再添加远端工作区。",
+      "Choose a remote directory before adding a workspace.": "请先选择远端文件夹，再添加工作区。",
+      "No connected hosts": "暂无已连接的主机",
+      "Add remote workspace": "添加远端工作区",
+      "Choose a connected host and browse to the remote folder to use as a workspace.": "选择已连接的主机，并选择用作工作区的远端文件夹。",
+      "Adding…": "正在添加…",
+      "Create workspace here": "在此创建工作区",
+      "Host": "主机",
+      "Connect a host in Settings → Remote Desktop before creating a remote workspace.": "请先在“设置 → 远端桌面”中连接主机，再创建远端工作区。",
+      "Show hidden": "显示隐藏文件夹",
+      "Loading remote folders…": "正在加载远端文件夹…",
+      "Cannot read this directory.": "无法读取此文件夹。",
+      "Retry": "重试",
+      "No folders in this directory.": "此目录下没有文件夹。",
+      "Connected.": "已连接。",
+      "Disconnected.": "已断开。",
+      "SSH Hosts": "SSH 主机",
+      "No concrete Host entries were found in ~/.ssh/config.": "未在 ~/.ssh/config 中找到具体的主机配置。",
+      "Connected": "已连接",
+      "Connecting": "正在连接",
+      "Connection failed": "连接失败",
+      "Not connected": "未连接",
+      "Connecting…": "正在连接…",
+      "Connect": "连接",
+      "Disconnecting…": "正在断开…",
+      "Disconnect": "断开连接",
+      "Connect to create a forwarded DSH Web URL for this Host.": "连接后将为此主机创建转发的 DSH 网页地址。",
+      "Use DSH on SSH Hosts from the same Workspace browser. Connected Hosts open in place; native DSH remains available in a separate tab.": "在同一工作区列表中使用 SSH 主机上的 DSH。连接后可直接打开远端会话，也可在独立标签页中打开原始 DSH 界面。",
+      "Checking environment": "正在检查环境",
+      "Installing DSH": "正在安装 DSH",
+      "Stopping managed DSH": "正在停止托管的 DSH",
+      "Synchronizing plugins": "正在同步插件",
+      "Starting DSH": "正在启动 DSH",
+      "Verifying remote DSH": "正在验证远端 DSH",
+      "Remote host {name}": "远端主机 {name}",
+      "Remote dsh {name}": "远端 DSH {name}",
+      "Open {name}": "打开 {name}",
+      "{n} Host": "{n} 台主机",
+      "{n} Hosts": "{n} 台主机",
+      "remote bridge closed": "远端桥接连接已关闭",
+      "remote bridge for {name} is not ready": "远端主机 {name} 的桥接连接尚未就绪",
+      "remote bridge for {name} does not support {method}": "远端主机 {name} 的桥接连接不支持 {method}"
+    }
+    const remoteEn = Object.fromEntries(Object.keys(remoteZh).map(key => [key, key]))
+    let localeService
+    let remoteTranslate = (key, args) => interpolateLocale(key, args)
+    let workspaceTranslate = (key, args) => interpolateLocale(OfficialWorkspace.en[key] ?? key, args)
+    function interpolateLocale(text, args) {
+      return text.replace(/\{(\w+)\}/g, (match, name) => args && name in args ? String(args[name]) : match)
+    }
+    function remoteT(key, args) { return remoteTranslate(key, args) }
+    function useRemoteLocale() {
+      useSyncExternalStore(localeService.subscribe, localeService.getSnapshot)
+      return remoteT
+    }
+    function installRemoteLocale(ctx) {
+      ctx.effect(() => {
+        const locale = ctx.locale
+        const disposeRemote = locale.register(REMOTE_LOCALE_NS, { zh: remoteZh, en: remoteEn })
+        const disposeWorkspace = locale.register(WORKSPACE_LOCALE_NS, { zh: OfficialWorkspace.zh, en: OfficialWorkspace.en })
+        // LocaleFace methods use their receiver; React calls store callbacks bare.
+        localeService = {
+          subscribe: listener => locale.subscribe(listener),
+          getSnapshot: () => locale.getSnapshot(),
+        }
+        remoteTranslate = locale.bind(REMOTE_LOCALE_NS)
+        workspaceTranslate = locale.bind(WORKSPACE_LOCALE_NS)
+        return () => { disposeWorkspace(); disposeRemote() }
+      }, 'dsh-ssh-workspace: language dictionaries')
+    }
     const LOCAL_SOURCE_ID = 'local'
     const ACTIVE_CHANGED = 'dsh-remote-desktop/active-changed'
     const BRIDGE_PROTOCOL_VERSION = 1
@@ -3018,7 +3113,7 @@ window.__ModuleLoader__.load({
     const useRemote = (selector) => useSyncExternalStore(store.subscribe, () => selector(store.getSnapshot()))
     const remoteBridges = new Map()
 
-    function closeRemoteBridge(sourceId, reason = new Error('remote bridge closed')) {
+    function closeRemoteBridge(sourceId, reason = new Error(remoteT('remote bridge closed'))) {
       const bridge = remoteBridges.get(sourceId)
       if (bridge === undefined) return
       remoteBridges.delete(sourceId)
@@ -3089,8 +3184,8 @@ window.__ModuleLoader__.load({
 
     async function remoteRpc(sourceId, method, payload = {}, signal) {
       const bridge = remoteBridges.get(sourceId)
-      if (bridge === undefined || !bridge.ready) throw new Error(`remote bridge for ${sourceId} is not ready`)
-      if (!bridge.capabilities.has(method)) throw new Error(`remote bridge for ${sourceId} does not support ${method}`)
+      if (bridge === undefined || !bridge.ready) throw new Error(remoteT('remote bridge for {name} is not ready', { name: sourceId }))
+      if (!bridge.capabilities.has(method)) throw new Error(remoteT('remote bridge for {name} does not support {method}', { name: sourceId, method }))
       if (signal?.aborted) throw signal.reason || new Error('remote request aborted')
       const requestId = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`
       return await new Promise((resolve, reject) => {
@@ -3144,7 +3239,7 @@ window.__ModuleLoader__.load({
       const homePath = String(home || '')
       if (homePath !== '' && (current === homePath || current.startsWith(`${homePath}/`))) {
         const relative = current === homePath ? [] : current.slice(homePath.length + 1).split('/').filter(Boolean)
-        const items = [{ label: 'Home', path: homePath }]
+        const items = [{ label: remoteT('Home'), path: homePath }]
         const base = pathSegments(homePath)
         relative.forEach((part, index) => items.push({ label: part, path: joinPosix([...base, ...relative.slice(0, index + 1)]) }))
         return items
@@ -3211,13 +3306,13 @@ window.__ModuleLoader__.load({
       const archived = new Set(snapshot.workspaces?.archivedSessionIds || [])
       return (snapshot.workspaces?.items || []).map(ws => ({
         ...ws,
-        title: ws.title || ws.path || 'Workspace',
+        title: ws.title || ws.path || remoteT('Workspace'),
         sessions: (ws.sessionIds || []).filter(id => !archived.has(id)).map(id => byId.get(id)).filter(Boolean),
       }))
     }
 
     function titleOfSession(row) {
-      return row?.displayTitle || row?.title || row?.projections?.values?.title || row?.cwd?.split(/[\\/]/).pop() || row?.sessionId || 'Untitled session'
+      return row?.displayTitle || row?.title || row?.projections?.values?.title || row?.cwd?.split(/[\\/]/).pop() || row?.sessionId || remoteT('Untitled session')
     }
 
     function sessionUpdatedAt(row) {
@@ -3312,10 +3407,7 @@ window.__ModuleLoader__.load({
       return { sourceId: rest.slice(0, split), id: rest.slice(split + REMOTE_ID_SEPARATOR.length) }
     }
     function workspaceT(key, args = {}) {
-      const table = OfficialWorkspace.en || {}
-      let text = table[key] || key
-      for (const [name, value] of Object.entries(args)) text = text.replaceAll(`{${name}}`, String(value))
-      return text
+      return workspaceTranslate(key, args)
     }
     function officialSessionSummary(row, id, sourceKind, sourceId, rawSessionId, remoteMarker) {
       const projectionValues = row.projectionValues || row.projections?.values
@@ -3340,6 +3432,7 @@ window.__ModuleLoader__.load({
       }
     }
     function OfficialWorkspaceForkBrowser(props) {
+      useRemoteLocale()
       const remote = useRemote(s => s)
       const [addAnchor, setAddAnchor] = useState(null)
       const addButtonRef = useMemo(() => ({ current: addAnchor }), [addAnchor])
@@ -3409,7 +3502,7 @@ window.__ModuleLoader__.load({
                 sourceKind: 'remote',
                 sourceId: source.id,
                 remoteMarker: { id: source.id, label: source.label, state: source.state || 'connected', color: remoteHostColor(source.id) },
-                title: ws.title || ws.path || 'Workspace',
+                title: ws.title || ws.path || remoteT("Workspace"),
                 createdAt: ws.createdAt || new Date(0).toISOString(),
                 sessionIds: (ws.sessions || []).map(row => rowSessionId(row)).filter(Boolean).map(id => remoteKey(source.id, id)),
               })
@@ -3463,7 +3556,7 @@ window.__ModuleLoader__.load({
         useWorkspaces: props.useWorkspaces,
         useDirectoryFlow: props.useDirectoryFlow,
         renderSlot: props.renderSlot,
-        directoryFlowSlot: 'sidebar.workspaces.directoryFlow',
+        directoryFlowSlot: 'dsh-ssh-workspace.sidebar.directoryFlow',
       })
       return h(React.Fragment, null,
         h(OfficialWorkspace.WorkspaceBrowser, {
@@ -3504,10 +3597,10 @@ window.__ModuleLoader__.load({
             const remoteId = decodeWorkspace(workspaceId)
             const beforeRemoteId = decodeWorkspace(beforeWorkspaceId)
             if (remoteId) {
-              if (beforeWorkspaceId !== undefined && beforeRemoteId?.sourceId !== remoteId.sourceId) throw new Error('Cannot reorder remote workspaces across sources')
+              if (beforeWorkspaceId !== undefined && beforeRemoteId?.sourceId !== remoteId.sourceId) throw new Error(remoteT('Cannot reorder remote workspaces across sources'))
               await insertRemoteWorkspaceBefore(remoteId.sourceId, remoteId.id, beforeRemoteId?.id)
             } else if (beforeRemoteId === null) await props.insertWorkspaceBefore?.(workspaceId, beforeWorkspaceId)
-            else throw new Error('Cannot reorder local workspaces into a remote source')
+            else throw new Error(remoteT('Cannot reorder local workspaces into a remote source'))
           },
           archiveSession: async sessionId => {
             const remoteId = decodeSession(sessionId)
@@ -3519,7 +3612,7 @@ window.__ModuleLoader__.load({
             const sessionRemoteId = decodeSession(sessionId)
             const beforeRemoteId = decodeSession(beforeSessionId)
             if (workspaceRemoteId || sessionRemoteId || beforeRemoteId) {
-              if (!workspaceRemoteId || !sessionRemoteId || workspaceRemoteId.sourceId !== sessionRemoteId.sourceId || (beforeSessionId !== undefined && beforeRemoteId?.sourceId !== workspaceRemoteId.sourceId)) throw new Error('Cannot reorder sessions across sources')
+              if (!workspaceRemoteId || !sessionRemoteId || workspaceRemoteId.sourceId !== sessionRemoteId.sourceId || (beforeSessionId !== undefined && beforeRemoteId?.sourceId !== workspaceRemoteId.sourceId)) throw new Error(remoteT('Cannot reorder sessions across sources'))
               await insertRemoteSessionBefore(workspaceRemoteId.sourceId, workspaceRemoteId.id, sessionRemoteId.id, beforeRemoteId?.id)
             } else await props.insertSessionBefore?.(workspaceId, sessionId, beforeSessionId)
           },
@@ -3536,6 +3629,7 @@ window.__ModuleLoader__.load({
     }
 
     function WorkspaceAddSplitter(props) {
+      useRemoteLocale()
       const remote = useRemote(s => s)
       const localWorkspaces = props.useWorkspaces(s => s.items)
       const [splitterOpen, setSplitterOpen] = useState(false)
@@ -3562,17 +3656,17 @@ window.__ModuleLoader__.load({
       const menuItems = [
         ...localWorkspaces.map(ws => ({
           id: `local:${ws.workspaceId}`,
-          label: ws.title || ws.path || 'Workspace',
+          label: ws.title || ws.path || remoteT("Workspace"),
           icon: h(IconFolderCloseRegular, { size: 16 }),
         })),
         ...(remoteWorkspaceRows.length > 0 ? [{ type: 'separator', id: 'remote-separator' }] : []),
         ...remoteWorkspaceRows.map(({ source, workspace }) => ({
           id: `remote:${source.id}:${workspace.workspaceId}`,
-          label: h('span', { className: 'rd-hostButtonLabel' }, workspace.title || workspace.path || 'Workspace'),
+          label: h('span', { className: 'rd-hostButtonLabel' }, workspace.title || workspace.path || remoteT("Workspace")),
           icon: h(IconFolderCloseRegular, { size: 16 }),
         })),
       ]
-      const footerItems = [{ id: 'add-workspace', label: 'Add workspace…', icon: h(IconProjectAddOutlineRegular, { size: 16 }) }]
+      const footerItems = [{ id: 'add-workspace', label: remoteT("Add workspace…"), icon: h(IconProjectAddOutlineRegular, { size: 16 }) }]
       // Picker rows use source-qualified ids so local and remote Workspace ids
       // cannot collide. The conversation owner still reports its local
       // selection as the raw Workspace id, so qualify it before handing it to
@@ -3680,34 +3774,35 @@ window.__ModuleLoader__.load({
         h(Modal, {
           open: splitterOpen,
           onClose: () => setSplitterOpen(false),
-          title: 'Add workspace',
-          closeLabel: 'Close',
-          description: 'Choose where the workspace should live.',
-          footer: h(Button, { variant: 'outline', onClick: () => setSplitterOpen(false) }, 'Cancel'),
+          title: remoteT("Add workspace"),
+          closeLabel: remoteT("Close"),
+          description: remoteT("Choose where the workspace should live."),
+          footer: h(Button, { variant: 'outline', onClick: () => setSplitterOpen(false) }, remoteT("Cancel")),
         },
           h('div', { className: 'rd-addChoiceGrid', 'data-rd-add-workspace-splitter': 'true' },
             h('button', { type: 'button', className: 'rd-addChoice', onClick: openLocalFlow, 'data-rd-add-local': 'true' },
               h('span', { className: 'rd-addChoiceIcon' }, h(IconFolderOpenOutlineRegular, { size: 16 })),
               h('span', null,
-                h('span', { className: 'rd-addChoiceTitle' }, 'Local workspace'),
-                h('span', { className: 'rd-addChoiceDesc' }, 'Use the official picker for this DSH instance.')
+                h('span', { className: 'rd-addChoiceTitle' }, remoteT("Local workspace")),
+                h('span', { className: 'rd-addChoiceDesc' }, remoteT("Use the official picker for this DSH instance."))
               )
             ),
             h('button', { type: 'button', className: 'rd-addChoice', onClick: openRemoteFlow, 'data-rd-add-remote': 'true' },
               h('span', { className: 'rd-addChoiceIcon' }, h(IconProjectAddOutlineRegular, { size: 16 })),
               h('span', null,
-                h('span', { className: 'rd-addChoiceTitle' }, 'Remote workspace'),
-                h('span', { className: 'rd-addChoiceDesc' }, isRemoteDesktopIframe() ? 'Ask the main host to create one on a connected remote.' : 'Create one on a connected remote host.')
+                h('span', { className: 'rd-addChoiceTitle' }, remoteT("Remote workspace")),
+                h('span', { className: 'rd-addChoiceDesc' }, isRemoteDesktopIframe() ? remoteT("Ask the main host to create one on a connected remote.") : remoteT("Create one on a connected remote host."))
               )
             )
           ),
-          message && h('div', { className: 'rd-addError', role: 'alert' }, message)
+          message && h('div', { className: 'rd-addError', role: 'alert' }, remoteT(message))
         ),
-        props.renderSlot && props.renderSlot(props.directoryFlowSlot || 'conversation.hero.workspace.directoryFlow', localFlowOwner)
+        props.renderSlot && props.renderSlot(props.directoryFlowSlot || 'dsh-ssh-workspace.hero.directoryFlow', localFlowOwner)
       )
     }
 
     function RemoteSetupModal() {
+      useRemoteLocale()
       const remote = useRemote(s => s)
       const [hostId, setHostId] = useState('')
       const [busy, setBusy] = useState(false)
@@ -3780,28 +3875,28 @@ window.__ModuleLoader__.load({
         }
       }
       const hostItems = connected.length === 0
-        ? [{ id: 'no-host', label: 'No connected hosts', disabled: true }]
+        ? [{ id: 'no-host', label: remoteT("No connected hosts"), disabled: true }]
         : connected.map(source => ({ id: source.id, label: source.label }))
       const breadcrumbs = remoteBreadcrumbs(browse.path, browse.home)
       const browseBusy = browse.status === 'loading'
       return h(Modal, {
         open,
         onClose: () => close('cancelled'),
-        title: 'Add remote workspace',
-        closeLabel: 'Close',
-        description: 'Choose a connected host and browse to the remote folder to use as a workspace.',
+        title: remoteT("Add remote workspace"),
+        closeLabel: remoteT("Close"),
+        description: remoteT("Choose a connected host and browse to the remote folder to use as a workspace."),
         footer: h(React.Fragment, null,
-          h(Button, { variant: 'outline', disabled: busy, onClick: () => close('cancelled') }, 'Cancel'),
-          h(Button, { variant: 'primary', disabled: busy || browseBusy || connected.length === 0 || browse.path === '', onClick: () => void submit(), 'data-rd-add-workspace-submit': 'true' }, busy ? 'Adding…' : 'Create workspace here')
+          h(Button, { variant: 'outline', disabled: busy, onClick: () => close('cancelled') }, remoteT("Cancel")),
+          h(Button, { variant: 'primary', disabled: busy || browseBusy || connected.length === 0 || browse.path === '', onClick: () => void submit(), 'data-rd-add-workspace-submit': 'true' }, busy ? remoteT("Adding…") : remoteT("Create workspace here"))
         ),
       },
         h('div', { 'data-rd-remote-workspace-setup': 'true', 'data-rd-remote-directory-picker': 'true' },
           h('div', { className: 'rd-setupField' },
-            h('div', { className: 'rd-setupLabel' }, 'Host'),
+            h('div', { className: 'rd-setupLabel' }, remoteT("Host")),
             h(Menu, {
               open: hostMenuOpen,
               anchor: h(Button, { variant: 'outline', className: 'rd-hostButton', disabled: busy || connected.length === 0, onClick: () => setHostMenuOpen(value => !value) },
-                h('span', { className: 'rd-hostButtonLabel' }, selected?.label || 'No connected hosts'),
+                h('span', { className: 'rd-hostButtonLabel' }, selected?.label || remoteT("No connected hosts")),
                 h(IconChevronDownOutlineRegular, { size: 14 })
               ),
               items: hostItems,
@@ -3810,7 +3905,7 @@ window.__ModuleLoader__.load({
               onClose: () => setHostMenuOpen(false),
             })
           ),
-          connected.length === 0 && h('div', { className: 'rd-setupHint' }, 'Connect a host in Settings → Remote Desktop before creating a remote workspace.'),
+          connected.length === 0 && h('div', { className: 'rd-setupHint' }, remoteT("Connect a host in Settings → Remote Desktop before creating a remote workspace.")),
           connected.length > 0 && h('div', { className: 'rd-browsePanel' },
             h('div', { className: 'rd-browseToolbar' },
               h('div', { className: 'rd-breadcrumbs', 'data-rd-remote-breadcrumbs': 'true' },
@@ -3819,15 +3914,15 @@ window.__ModuleLoader__.load({
                   h('button', { type: 'button', className: 'rd-breadcrumbButton', disabled: busy || browseBusy, title: item.path, onClick: () => browseTo(item.path), 'data-rd-breadcrumb-path': item.path }, item.label)
                 ))
               ),
-              h(Button, { variant: showHidden ? 'primary' : 'outline', className: 'rd-hiddenToggle', disabled: busy || browseBusy, onClick: () => { const next = !showHidden; setShowHidden(next); browseTo(browse.path || undefined, next) }, 'data-rd-show-hidden': showHidden ? 'true' : 'false' }, 'Show hidden')
+              h(Button, { variant: showHidden ? 'primary' : 'outline', className: 'rd-hiddenToggle', disabled: busy || browseBusy, onClick: () => { const next = !showHidden; setShowHidden(next); browseTo(browse.path || undefined, next) }, 'data-rd-show-hidden': showHidden ? 'true' : 'false' }, remoteT("Show hidden"))
             ),
             h('div', { className: 'rd-directoryList', 'data-rd-remote-directory-list': 'true' },
-              browseBusy && h('div', { className: 'rd-browseStatus', role: 'status' }, 'Loading remote folders…'),
+              browseBusy && h('div', { className: 'rd-browseStatus', role: 'status' }, remoteT("Loading remote folders…")),
               browse.status === 'error' && h('div', { className: 'rd-browseStatus rd-browseStatusError', role: 'alert' },
-                h('div', null, browse.error || 'Cannot read this directory.'),
-                h(Button, { variant: 'outline', disabled: busy, onClick: () => browseTo(browse.path || undefined), 'data-rd-browse-retry': 'true' }, 'Retry')
+                h('div', null, remoteT(browse.error || 'Cannot read this directory.')),
+                h(Button, { variant: 'outline', disabled: busy, onClick: () => browseTo(browse.path || undefined), 'data-rd-browse-retry': 'true' }, remoteT("Retry"))
               ),
-              browse.status === 'ready' && browse.entries.length === 0 && h('div', { className: 'rd-browseStatus' }, 'No folders in this directory.'),
+              browse.status === 'ready' && browse.entries.length === 0 && h('div', { className: 'rd-browseStatus' }, remoteT("No folders in this directory.")),
               browse.status === 'ready' && browse.entries.map(entry => h('button', { key: entry.path, type: 'button', className: 'rd-directoryRow', disabled: busy, onClick: () => browseTo(entry.path), 'data-rd-directory-path': entry.path },
                 h(IconFolderCloseRegular, { size: 16 }),
                 h('span', { className: 'rd-directoryName' }, entry.name)
@@ -3835,11 +3930,12 @@ window.__ModuleLoader__.load({
             )
           ),
           browse.path && h('div', { className: 'rd-currentPath', 'data-rd-selected-remote-path': browse.path }, browse.path),
-          error && h('div', { className: 'rd-addError', role: 'alert' }, error)
+          error && h('div', { className: 'rd-addError', role: 'alert' }, remoteT(error))
         )
       )
     }
     function RemoteOverlay() {
+      useRemoteLocale()
       const remote = useRemote(s => s)
       const { sources, active, pendingOpen, companionReady } = remote
       const [left, setLeftState] = useState(0)
@@ -3931,7 +4027,7 @@ window.__ModuleLoader__.load({
           src: withParent(s.iframeUrl),
           style: { ...styles.iframe, display: source?.id === s.id ? 'block' : 'none' },
           'data-rd-frame-source-id': s.id,
-          title: `Remote dsh ${s.label}`,
+          title: remoteT('Remote dsh {name}', { name: s.label }),
         })),
       )
       return h(React.Fragment, null, overlay, h(RemoteSetupModal, null))
@@ -3954,6 +4050,7 @@ window.__ModuleLoader__.load({
 
 
     function SettingsSection() {
+      useRemoteLocale()
       const sources = useRemote(s => s.sources)
       const [pendingHost, setPendingHost] = useState(null)
       const [feedback, setFeedback] = useState(null)
@@ -3974,17 +4071,17 @@ window.__ModuleLoader__.load({
         window.open(nativeUrl, '_blank', 'noopener,noreferrer')
       }
       return h('section', { className: 'rd-settingsSection', 'data-rd-settings-section': 'true' },
-        h('h2', { className: 'rd-settingsTitle' }, 'Remote Desktop'),
-        h('p', { className: 'rd-settingsIntro' }, 'Use DSH on SSH Hosts from the same Workspace browser. Connected Hosts open in place; native DSH remains available in a separate tab.'),
+        h('h2', { className: 'rd-settingsTitle' }, remoteT("Remote Desktop")),
+        h('p', { className: 'rd-settingsIntro' }, remoteT("Use DSH on SSH Hosts from the same Workspace browser. Connected Hosts open in place; native DSH remains available in a separate tab.")),
         h('div', { className: 'rd-settingsHeadingRow' },
-          h('h3', { className: 'rd-settingsHeading' }, 'SSH Hosts'),
-          h('span', { className: 'rd-settingsCount' }, `${sources.length} ${sources.length === 1 ? 'Host' : 'Hosts'}`)
+          h('h3', { className: 'rd-settingsHeading' }, remoteT("SSH Hosts")),
+          h('span', { className: 'rd-settingsCount' }, remoteT(sources.length === 1 ? '{n} Host' : '{n} Hosts', { n: sources.length }))
         ),
-        sources.length === 0 && h('div', { className: 'rd-settingsEmpty' }, 'No concrete Host entries were found in ~/.ssh/config.'),
+        sources.length === 0 && h('div', { className: 'rd-settingsEmpty' }, remoteT("No concrete Host entries were found in ~/.ssh/config.")),
         h('div', { className: 'rd-settingsHosts' }, sources.map(source => {
           const connected = source.state === 'connected'
           const busy = pendingHost === source.id
-          const stateText = connected ? 'Connected' : source.state === 'connecting' ? (source.setupStage || 'Connecting') : source.state === 'error' ? 'Connection failed' : 'Not connected'
+          const stateText = connected ? remoteT("Connected") : source.state === 'connecting' ? remoteT(source.setupStage || 'Connecting') : source.state === 'error' ? remoteT("Connection failed") : remoteT("Not connected")
           const dotState = connected ? 'done' : source.state === 'connecting' ? 'ongoing' : source.state === 'error' ? 'error' : 'warning'
           const address = [source.sshUser, source.sshHost].filter(Boolean).join('@') || source.sshAlias || source.id
           return h('article', { key: source.id, className: 'rd-settingsHost', 'data-rd-settings-source-id': source.id },
@@ -3998,17 +4095,17 @@ window.__ModuleLoader__.load({
                 stateText
               )
             ),
-            source.error && h('p', { className: 'rd-settingsFeedback rd-settingsFeedbackError', role: 'alert' }, source.error),
-            feedback?.id === source.id && h('p', { className: `rd-settingsFeedback${feedback.tone === 'error' ? ' rd-settingsFeedbackError' : ''}`, role: feedback.tone === 'error' ? 'alert' : 'status' }, feedback.text),
+            source.error && h('p', { className: 'rd-settingsFeedback rd-settingsFeedbackError', role: 'alert' }, remoteT(source.error)),
+            feedback?.id === source.id && h('p', { className: `rd-settingsFeedback${feedback.tone === 'error' ? ' rd-settingsFeedbackError' : ''}`, role: feedback.tone === 'error' ? 'alert' : 'status' }, remoteT(feedback.text)),
             h('div', { className: 'rd-settingsActions' },
               connected
-                ? h(Button, { variant: 'primary', disabled: busy || !source.iframeUrl, 'data-rd-settings-open-native': source.id, onClick: () => openNative(source) }, `Open ${source.label}`)
-                : h(Button, { variant: 'primary', disabled: busy, 'data-rd-settings-connect': source.id, onClick: () => void connect(source.id) }, busy ? 'Connecting…' : 'Connect'),
-              connected && h(Button, { variant: 'outline', disabled: busy, 'data-rd-settings-disconnect': source.id, onClick: () => void disconnect(source.id) }, busy ? 'Disconnecting…' : 'Disconnect')
+                ? h(Button, { variant: 'primary', disabled: busy || !source.iframeUrl, 'data-rd-settings-open-native': source.id, onClick: () => openNative(source) }, remoteT('Open {name}', { name: source.label }))
+                : h(Button, { variant: 'primary', disabled: busy, 'data-rd-settings-connect': source.id, onClick: () => void connect(source.id) }, busy ? remoteT("Connecting…") : remoteT("Connect")),
+              connected && h(Button, { variant: 'outline', disabled: busy, 'data-rd-settings-disconnect': source.id, onClick: () => void disconnect(source.id) }, busy ? remoteT("Disconnecting…") : remoteT("Disconnect"))
             ),
             connected && source.iframeUrl
               ? h('a', { className: 'rd-settingsNativeUrl', href: nativeRemoteUrl(source.iframeUrl), target: '_blank', rel: 'noopener noreferrer', 'data-rd-settings-native-link': 'true' }, nativeRemoteUrl(source.iframeUrl))
-              : h('div', { className: 'rd-settingsNativeUrl', 'data-rd-settings-native-placeholder': 'true' }, 'Connect to create a forwarded DSH Web URL for this Host.')
+              : h('div', { className: 'rd-settingsNativeUrl', 'data-rd-settings-native-placeholder': 'true' }, remoteT("Connect to create a forwarded DSH Web URL for this Host."))
           )
         }))
       )
@@ -4025,17 +4122,16 @@ window.__ModuleLoader__.load({
     }
 
     exports.apply = function apply(ctx) {
+      installRemoteLocale(ctx)
       const iframeMode = isRemoteDesktopIframe()
       const sessions = ctx.get('sessions')
       const workspaces = ctx.get('workspaces')
       const viewHandle = OfficialWorkspace.createWorkspaceViewStore()
       const viewInstance = viewHandle.create()
       const viewStore = { ...viewHandle, create: () => viewInstance }
-      const uiWorkspace = new OfficialWorkspace.UiWorkspaceService(
-        ctx, ctx.remote.directoryPicker, workspaces, sessions,
-        viewInstance.actions, notice => console.warn('workspace navigation:', notice),
-      )
-      ctx.slots.provideRoot({ hooks: { workspaces: workspaces.list } })
+      // Navigation owns session retention and downstream conversation services.
+      // Reuse its native lifetime instead of restarting those services on reload.
+      const uiWorkspace = ctx.get('uiWorkspace')
       const openLocal = (sessionId) => uiWorkspace.openSession(sessionId)
       const createLocalWorkspace = input => workspaces.create(input)
       const startLocalWorkspace = async (workspaceId) => {
@@ -4047,25 +4143,47 @@ window.__ModuleLoader__.load({
         store.openLocal(sessionId)
         return sessionId
       }
+      // Shadowing a slot must not redeclare the native entry's children.
+      // Mirror the native directory picker into plugin-owned child slots.
+      const mirrorDirectoryFlow = (nativeName, localName) => {
+        ctx.slots.inject(localName, () => ctx.effect(() => {
+          let dispose = () => {}
+          const refresh = () => {
+            dispose()
+            const entry = ctx.slots.entries(nativeName)[0]
+            dispose = entry ? ctx.slots.register({
+              name: localName,
+              inject: entry.inject,
+              store: entry.store,
+              locale: entry.locale,
+            }, entry.component) : () => {}
+          }
+          refresh()
+          const unsubscribe = ctx.slots.subscribe(nativeName, refresh)
+          return () => { unsubscribe(); dispose() }
+        }))
+      }
+      mirrorDirectoryFlow('conversation.hero.workspace.directoryFlow', 'dsh-ssh-workspace.hero.directoryFlow')
+      mirrorDirectoryFlow('sidebar.workspaces.directoryFlow', 'dsh-ssh-workspace.sidebar.directoryFlow')
       const flowSource = {
-        getSnapshot: () => ctx.slots.entries('conversation.hero.workspace.directoryFlow').length > 0,
-        subscribe: listener => ctx.slots.subscribe('conversation.hero.workspace.directoryFlow', listener),
+        getSnapshot: () => ctx.slots.entries('dsh-ssh-workspace.hero.directoryFlow').length > 0,
+        subscribe: listener => ctx.slots.subscribe('dsh-ssh-workspace.hero.directoryFlow', listener),
       }
       const browserFlowSource = {
-        getSnapshot: () => ctx.slots.entries('sidebar.workspaces.directoryFlow').length > 0,
-        subscribe: listener => ctx.slots.subscribe('sidebar.workspaces.directoryFlow', listener),
+        getSnapshot: () => ctx.slots.entries('dsh-ssh-workspace.sidebar.directoryFlow').length > 0,
+        subscribe: listener => ctx.slots.subscribe('dsh-ssh-workspace.sidebar.directoryFlow', listener),
       }
       ctx.slots.inject('conversation.hero.workspace', () => ctx.slots.register({
         name: 'conversation.hero.workspace',
         priority: -10,
-        children: { 'conversation.hero.workspace.directoryFlow': { kind: 'single', scope: 'root' } },
+        children: { 'dsh-ssh-workspace.hero.directoryFlow': { kind: 'single', scope: 'root' } },
         inject: () => ({ createLocalWorkspace, hooks: { directoryFlow: flowSource } }),
       }, WorkspaceAddSplitter))
       if (iframeMode) {
         ctx.slots.inject('sidebar.workspaces', () => ctx.slots.register({
           name: 'sidebar.workspaces',
           priority: -10,
-          children: { 'sidebar.workspaces.directoryFlow': { kind: 'single', scope: 'root' } },
+          children: { 'dsh-ssh-workspace.sidebar.directoryFlow': { kind: 'single', scope: 'root' } },
         }, DirectoryFlowAnchor))
         return
       }
@@ -4084,7 +4202,7 @@ window.__ModuleLoader__.load({
       ctx.slots.inject('sidebar.workspaces', () => ctx.slots.register({
         name: 'sidebar.workspaces',
         priority: -10,
-        children: { 'sidebar.workspaces.directoryFlow': { kind: 'single', scope: 'root' } },
+        children: { 'dsh-ssh-workspace.sidebar.directoryFlow': { kind: 'single', scope: 'root' } },
         store: viewStore,
         inject: () => ({
           openLocal,
@@ -4123,7 +4241,7 @@ window.__ModuleLoader__.load({
         name: 'settings.section',
         id: 'remote-desktop',
         order: 80,
-        label: 'Remote Desktop',
+        label: () => remoteT('Remote Desktop'),
       }, SettingsSection))
     }
 
