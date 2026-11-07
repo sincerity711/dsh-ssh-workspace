@@ -1404,7 +1404,7 @@
           useWorkspaces,
           createWorkspace,
           useDirectoryFlow,
-          renderDirectoryFlow: (owner) => renderSlot("conversation.hero.workspace.directoryFlow", owner),
+          renderDirectoryFlow: (owner) => renderSlot("dsh-ssh-workspace.hero.directoryFlow", owner),
           selectedId,
           onPick,
           onClose
@@ -2484,7 +2484,7 @@
                   useWorkspaces,
                   createWorkspace,
                   useDirectoryFlow,
-                  renderDirectoryFlow: (owner) => renderSlot("sidebar.workspaces.directoryFlow", owner),
+                  renderDirectoryFlow: (owner) => renderSlot("dsh-ssh-workspace.sidebar.directoryFlow", owner),
                   addOnly: true,
                   side: "right",
                   onPick: (workspaceId) => {

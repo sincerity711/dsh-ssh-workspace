@@ -12,7 +12,7 @@ window.__ModuleLoader__.load({
     const { createElement: h, useEffect, useMemo, useRef, useState, useSyncExternalStore } = React
 
     exports.inject = [
-      'slots', 'sessions', 'workspaces', 'locale', 'remote', 'remote.directoryPicker', 'layout',
+      'slots', 'sessions', 'workspaces', 'uiWorkspace', 'locale', 'remote', 'remote.directoryPicker', 'layout',
     ]
 
     // Official ui-workspace copy from deepseek-harness 4e84901e6471b79ec0338099867ebb4606d12bb5.
@@ -1422,7 +1422,7 @@ window.__ModuleLoader__.load({
           useWorkspaces,
           createWorkspace,
           useDirectoryFlow,
-          renderDirectoryFlow: (owner) => renderSlot("conversation.hero.workspace.directoryFlow", owner),
+          renderDirectoryFlow: (owner) => renderSlot("dsh-ssh-workspace.hero.directoryFlow", owner),
           selectedId,
           onPick,
           onClose
@@ -2502,7 +2502,7 @@ window.__ModuleLoader__.load({
                   useWorkspaces,
                   createWorkspace,
                   useDirectoryFlow,
-                  renderDirectoryFlow: (owner) => renderSlot("sidebar.workspaces.directoryFlow", owner),
+                  renderDirectoryFlow: (owner) => renderSlot("dsh-ssh-workspace.sidebar.directoryFlow", owner),
                   addOnly: true,
                   side: "right",
                   onPick: (workspaceId) => {
@@ -3463,7 +3463,7 @@ window.__ModuleLoader__.load({
         useWorkspaces: props.useWorkspaces,
         useDirectoryFlow: props.useDirectoryFlow,
         renderSlot: props.renderSlot,
-        directoryFlowSlot: 'sidebar.workspaces.directoryFlow',
+        directoryFlowSlot: 'dsh-ssh-workspace.sidebar.directoryFlow',
       })
       return h(React.Fragment, null,
         h(OfficialWorkspace.WorkspaceBrowser, {
@@ -3703,7 +3703,7 @@ window.__ModuleLoader__.load({
           ),
           message && h('div', { className: 'rd-addError', role: 'alert' }, message)
         ),
-        props.renderSlot && props.renderSlot(props.directoryFlowSlot || 'conversation.hero.workspace.directoryFlow', localFlowOwner)
+        props.renderSlot && props.renderSlot(props.directoryFlowSlot || 'dsh-ssh-workspace.hero.directoryFlow', localFlowOwner)
       )
     }
 
@@ -4031,11 +4031,9 @@ window.__ModuleLoader__.load({
       const viewHandle = OfficialWorkspace.createWorkspaceViewStore()
       const viewInstance = viewHandle.create()
       const viewStore = { ...viewHandle, create: () => viewInstance }
-      const uiWorkspace = new OfficialWorkspace.UiWorkspaceService(
-        ctx, ctx.remote.directoryPicker, workspaces, sessions,
-        viewInstance.actions, notice => console.warn('workspace navigation:', notice),
-      )
-      ctx.slots.provideRoot({ hooks: { workspaces: workspaces.list } })
+      // Navigation owns session retention and downstream conversation services.
+      // Reuse its native lifetime instead of restarting those services on reload.
+      const uiWorkspace = ctx.get('uiWorkspace')
       const openLocal = (sessionId) => uiWorkspace.openSession(sessionId)
       const createLocalWorkspace = input => workspaces.create(input)
       const startLocalWorkspace = async (workspaceId) => {
@@ -4047,25 +4045,47 @@ window.__ModuleLoader__.load({
         store.openLocal(sessionId)
         return sessionId
       }
+      // Shadowing a slot must not redeclare the native entry's children.
+      // Mirror the native directory picker into plugin-owned child slots.
+      const mirrorDirectoryFlow = (nativeName, localName) => {
+        ctx.slots.inject(localName, () => ctx.effect(() => {
+          let dispose = () => {}
+          const refresh = () => {
+            dispose()
+            const entry = ctx.slots.entries(nativeName)[0]
+            dispose = entry ? ctx.slots.register({
+              name: localName,
+              inject: entry.inject,
+              store: entry.store,
+              locale: entry.locale,
+            }, entry.component) : () => {}
+          }
+          refresh()
+          const unsubscribe = ctx.slots.subscribe(nativeName, refresh)
+          return () => { unsubscribe(); dispose() }
+        }))
+      }
+      mirrorDirectoryFlow('conversation.hero.workspace.directoryFlow', 'dsh-ssh-workspace.hero.directoryFlow')
+      mirrorDirectoryFlow('sidebar.workspaces.directoryFlow', 'dsh-ssh-workspace.sidebar.directoryFlow')
       const flowSource = {
-        getSnapshot: () => ctx.slots.entries('conversation.hero.workspace.directoryFlow').length > 0,
-        subscribe: listener => ctx.slots.subscribe('conversation.hero.workspace.directoryFlow', listener),
+        getSnapshot: () => ctx.slots.entries('dsh-ssh-workspace.hero.directoryFlow').length > 0,
+        subscribe: listener => ctx.slots.subscribe('dsh-ssh-workspace.hero.directoryFlow', listener),
       }
       const browserFlowSource = {
-        getSnapshot: () => ctx.slots.entries('sidebar.workspaces.directoryFlow').length > 0,
-        subscribe: listener => ctx.slots.subscribe('sidebar.workspaces.directoryFlow', listener),
+        getSnapshot: () => ctx.slots.entries('dsh-ssh-workspace.sidebar.directoryFlow').length > 0,
+        subscribe: listener => ctx.slots.subscribe('dsh-ssh-workspace.sidebar.directoryFlow', listener),
       }
       ctx.slots.inject('conversation.hero.workspace', () => ctx.slots.register({
         name: 'conversation.hero.workspace',
         priority: -10,
-        children: { 'conversation.hero.workspace.directoryFlow': { kind: 'single', scope: 'root' } },
+        children: { 'dsh-ssh-workspace.hero.directoryFlow': { kind: 'single', scope: 'root' } },
         inject: () => ({ createLocalWorkspace, hooks: { directoryFlow: flowSource } }),
       }, WorkspaceAddSplitter))
       if (iframeMode) {
         ctx.slots.inject('sidebar.workspaces', () => ctx.slots.register({
           name: 'sidebar.workspaces',
           priority: -10,
-          children: { 'sidebar.workspaces.directoryFlow': { kind: 'single', scope: 'root' } },
+          children: { 'dsh-ssh-workspace.sidebar.directoryFlow': { kind: 'single', scope: 'root' } },
         }, DirectoryFlowAnchor))
         return
       }
@@ -4084,7 +4104,7 @@ window.__ModuleLoader__.load({
       ctx.slots.inject('sidebar.workspaces', () => ctx.slots.register({
         name: 'sidebar.workspaces',
         priority: -10,
-        children: { 'sidebar.workspaces.directoryFlow': { kind: 'single', scope: 'root' } },
+        children: { 'dsh-ssh-workspace.sidebar.directoryFlow': { kind: 'single', scope: 'root' } },
         store: viewStore,
         inject: () => ({
           openLocal,
