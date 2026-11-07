@@ -914,7 +914,7 @@
             }),
             row.remoteMarker !== void 0 && (0, react_jsx_runtime.jsxs)("span", {
               title: row.remoteMarker.label,
-              "aria-label": `Remote host ${row.remoteMarker.label}`,
+              "aria-label": remoteT('Remote host {name}', { name: row.remoteMarker.label }),
               "data-rd-host-marker": row.remoteMarker.id,
               style: { flex: "none", display: "inline-flex", alignItems: "center", gap: 10, color: "var(--dsw-alias-label-tertiary)", fontSize: 12, lineHeight: "20px" },
               children: [(0, react_jsx_runtime.jsx)("span", { children: row.remoteMarker.label }), (0, react_jsx_runtime.jsx)("span", { style: { flex: "none", width: 8, height: 8, borderRadius: 999, background: row.remoteMarker.color } })]

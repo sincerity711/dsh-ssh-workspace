@@ -23,7 +23,7 @@ test('remote desktop settings section lists hosts and opens native remote pages'
   assert.match(client, /Use DSH on SSH Hosts from the same Workspace browser/)
   assert.match(client, /data-rd-settings-host-state/)
   assert.match(client, /h\(StateDot, \{ state: dotState, size: 8 \}\)/)
-  assert.match(client, /Open \$\{source\.label\}/)
+  assert.match(client, /remoteT\('Open \{name\}', \{ name: source\.label \}\)/)
   assert.match(client, /window\.open\(nativeUrl, '_blank', 'noopener,noreferrer'\)/)
   assert.match(client, /data-rd-settings-open-native/)
   assert.match(client, /data-rd-settings-native-link/)

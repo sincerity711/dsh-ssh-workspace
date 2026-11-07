@@ -1,4 +1,5 @@
     function RemoteOverlay() {
+      useRemoteLocale()
       const remote = useRemote(s => s)
       const { sources, active, pendingOpen, companionReady } = remote
       const [left, setLeftState] = useState(0)
@@ -90,7 +91,7 @@
           src: withParent(s.iframeUrl),
           style: { ...styles.iframe, display: source?.id === s.id ? 'block' : 'none' },
           'data-rd-frame-source-id': s.id,
-          title: `Remote dsh ${s.label}`,
+          title: remoteT('Remote dsh {name}', { name: s.label }),
         })),
       )
       return h(React.Fragment, null, overlay, h(RemoteSetupModal, null))
@@ -113,6 +114,7 @@
 
 
     function SettingsSection() {
+      useRemoteLocale()
       const sources = useRemote(s => s.sources)
       const [pendingHost, setPendingHost] = useState(null)
       const [feedback, setFeedback] = useState(null)
@@ -133,17 +135,17 @@
         window.open(nativeUrl, '_blank', 'noopener,noreferrer')
       }
       return h('section', { className: 'rd-settingsSection', 'data-rd-settings-section': 'true' },
-        h('h2', { className: 'rd-settingsTitle' }, 'Remote Desktop'),
-        h('p', { className: 'rd-settingsIntro' }, 'Use DSH on SSH Hosts from the same Workspace browser. Connected Hosts open in place; native DSH remains available in a separate tab.'),
+        h('h2', { className: 'rd-settingsTitle' }, remoteT("Remote Desktop")),
+        h('p', { className: 'rd-settingsIntro' }, remoteT("Use DSH on SSH Hosts from the same Workspace browser. Connected Hosts open in place; native DSH remains available in a separate tab.")),
         h('div', { className: 'rd-settingsHeadingRow' },
-          h('h3', { className: 'rd-settingsHeading' }, 'SSH Hosts'),
-          h('span', { className: 'rd-settingsCount' }, `${sources.length} ${sources.length === 1 ? 'Host' : 'Hosts'}`)
+          h('h3', { className: 'rd-settingsHeading' }, remoteT("SSH Hosts")),
+          h('span', { className: 'rd-settingsCount' }, remoteT(sources.length === 1 ? '{n} Host' : '{n} Hosts', { n: sources.length }))
         ),
-        sources.length === 0 && h('div', { className: 'rd-settingsEmpty' }, 'No concrete Host entries were found in ~/.ssh/config.'),
+        sources.length === 0 && h('div', { className: 'rd-settingsEmpty' }, remoteT("No concrete Host entries were found in ~/.ssh/config.")),
         h('div', { className: 'rd-settingsHosts' }, sources.map(source => {
           const connected = source.state === 'connected'
           const busy = pendingHost === source.id
-          const stateText = connected ? 'Connected' : source.state === 'connecting' ? (source.setupStage || 'Connecting') : source.state === 'error' ? 'Connection failed' : 'Not connected'
+          const stateText = connected ? remoteT("Connected") : source.state === 'connecting' ? remoteT(source.setupStage || 'Connecting') : source.state === 'error' ? remoteT("Connection failed") : remoteT("Not connected")
           const dotState = connected ? 'done' : source.state === 'connecting' ? 'ongoing' : source.state === 'error' ? 'error' : 'warning'
           const address = [source.sshUser, source.sshHost].filter(Boolean).join('@') || source.sshAlias || source.id
           return h('article', { key: source.id, className: 'rd-settingsHost', 'data-rd-settings-source-id': source.id },
@@ -157,17 +159,17 @@
                 stateText
               )
             ),
-            source.error && h('p', { className: 'rd-settingsFeedback rd-settingsFeedbackError', role: 'alert' }, source.error),
-            feedback?.id === source.id && h('p', { className: `rd-settingsFeedback${feedback.tone === 'error' ? ' rd-settingsFeedbackError' : ''}`, role: feedback.tone === 'error' ? 'alert' : 'status' }, feedback.text),
+            source.error && h('p', { className: 'rd-settingsFeedback rd-settingsFeedbackError', role: 'alert' }, remoteT(source.error)),
+            feedback?.id === source.id && h('p', { className: `rd-settingsFeedback${feedback.tone === 'error' ? ' rd-settingsFeedbackError' : ''}`, role: feedback.tone === 'error' ? 'alert' : 'status' }, remoteT(feedback.text)),
             h('div', { className: 'rd-settingsActions' },
               connected
-                ? h(Button, { variant: 'primary', disabled: busy || !source.iframeUrl, 'data-rd-settings-open-native': source.id, onClick: () => openNative(source) }, `Open ${source.label}`)
-                : h(Button, { variant: 'primary', disabled: busy, 'data-rd-settings-connect': source.id, onClick: () => void connect(source.id) }, busy ? 'Connecting…' : 'Connect'),
-              connected && h(Button, { variant: 'outline', disabled: busy, 'data-rd-settings-disconnect': source.id, onClick: () => void disconnect(source.id) }, busy ? 'Disconnecting…' : 'Disconnect')
+                ? h(Button, { variant: 'primary', disabled: busy || !source.iframeUrl, 'data-rd-settings-open-native': source.id, onClick: () => openNative(source) }, remoteT('Open {name}', { name: source.label }))
+                : h(Button, { variant: 'primary', disabled: busy, 'data-rd-settings-connect': source.id, onClick: () => void connect(source.id) }, busy ? remoteT("Connecting…") : remoteT("Connect")),
+              connected && h(Button, { variant: 'outline', disabled: busy, 'data-rd-settings-disconnect': source.id, onClick: () => void disconnect(source.id) }, busy ? remoteT("Disconnecting…") : remoteT("Disconnect"))
             ),
             connected && source.iframeUrl
               ? h('a', { className: 'rd-settingsNativeUrl', href: nativeRemoteUrl(source.iframeUrl), target: '_blank', rel: 'noopener noreferrer', 'data-rd-settings-native-link': 'true' }, nativeRemoteUrl(source.iframeUrl))
-              : h('div', { className: 'rd-settingsNativeUrl', 'data-rd-settings-native-placeholder': 'true' }, 'Connect to create a forwarded DSH Web URL for this Host.')
+              : h('div', { className: 'rd-settingsNativeUrl', 'data-rd-settings-native-placeholder': 'true' }, remoteT("Connect to create a forwarded DSH Web URL for this Host."))
           )
         }))
       )

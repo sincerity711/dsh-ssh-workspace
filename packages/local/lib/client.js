@@ -932,7 +932,7 @@ window.__ModuleLoader__.load({
             }),
             row.remoteMarker !== void 0 && (0, react_jsx_runtime.jsxs)("span", {
               title: row.remoteMarker.label,
-              "aria-label": `Remote host ${row.remoteMarker.label}`,
+              "aria-label": remoteT('Remote host {name}', { name: row.remoteMarker.label }),
               "data-rd-host-marker": row.remoteMarker.id,
               style: { flex: "none", display: "inline-flex", alignItems: "center", gap: 10, color: "var(--dsw-alias-label-tertiary)", fontSize: 12, lineHeight: "20px" },
               children: [(0, react_jsx_runtime.jsx)("span", { children: row.remoteMarker.label }), (0, react_jsx_runtime.jsx)("span", { style: { flex: "none", width: 8, height: 8, borderRadius: 999, background: row.remoteMarker.color } })]
@@ -2903,6 +2903,101 @@ window.__ModuleLoader__.load({
       */
       return { WorkspaceBrowser, WorkspacePicker, createWorkspaceViewStore, en, zh, UiWorkspaceService }
     })()
+    // English source keys keep unknown Host errors and plugin names intact.
+    const REMOTE_LOCALE_NS = 'dsh-ssh-workspace'
+    const WORKSPACE_LOCALE_NS = 'dsh-ssh-workspace.workspace'
+    const remoteZh = {
+      "Remote Desktop": "远端桌面",
+      "Workspace": "工作区",
+      "Untitled session": "未命名会话",
+      "Home": "主目录",
+      "Add workspace…": "添加工作区…",
+      "Add workspace": "添加工作区",
+      "Close": "关闭",
+      "Cancel": "取消",
+      "Local workspace": "本地工作区",
+      "Remote workspace": "远端工作区",
+      "Choose where the workspace should live.": "选择工作区所在的位置。",
+      "Use the official picker for this DSH instance.": "使用当前 DSH 的文件夹选择器。",
+      "Ask the main host to create one on a connected remote.": "通过主机在已连接的远端创建工作区。",
+      "Create one on a connected remote host.": "在已连接的远端主机上创建工作区。",
+      "Local directory picker is unavailable in this profile.": "当前配置无法使用本地文件夹选择器。",
+      "Remote workspace setup requires the main host bridge.": "创建远端工作区需要主机桥接连接。",
+      "Remote workspace setup timed out.": "创建远端工作区超时。",
+      "Remote workspace setup failed": "创建远端工作区失败",
+      "Cannot reorder remote workspaces across sources": "无法跨主机调整远端工作区顺序",
+      "Cannot reorder local workspaces into a remote source": "无法将本地工作区移动到远端主机",
+      "Cannot reorder sessions across sources": "无法跨主机调整会话顺序",
+      "Connect a remote host before adding a remote workspace.": "请先连接远端主机，再添加远端工作区。",
+      "Choose a remote directory before adding a workspace.": "请先选择远端文件夹，再添加工作区。",
+      "No connected hosts": "暂无已连接的主机",
+      "Add remote workspace": "添加远端工作区",
+      "Choose a connected host and browse to the remote folder to use as a workspace.": "选择已连接的主机，并选择用作工作区的远端文件夹。",
+      "Adding…": "正在添加…",
+      "Create workspace here": "在此创建工作区",
+      "Host": "主机",
+      "Connect a host in Settings → Remote Desktop before creating a remote workspace.": "请先在“设置 → 远端桌面”中连接主机，再创建远端工作区。",
+      "Show hidden": "显示隐藏文件夹",
+      "Loading remote folders…": "正在加载远端文件夹…",
+      "Cannot read this directory.": "无法读取此文件夹。",
+      "Retry": "重试",
+      "No folders in this directory.": "此目录下没有文件夹。",
+      "Connected.": "已连接。",
+      "Disconnected.": "已断开。",
+      "SSH Hosts": "SSH 主机",
+      "No concrete Host entries were found in ~/.ssh/config.": "未在 ~/.ssh/config 中找到具体的主机配置。",
+      "Connected": "已连接",
+      "Connecting": "正在连接",
+      "Connection failed": "连接失败",
+      "Not connected": "未连接",
+      "Connecting…": "正在连接…",
+      "Connect": "连接",
+      "Disconnecting…": "正在断开…",
+      "Disconnect": "断开连接",
+      "Connect to create a forwarded DSH Web URL for this Host.": "连接后将为此主机创建转发的 DSH 网页地址。",
+      "Use DSH on SSH Hosts from the same Workspace browser. Connected Hosts open in place; native DSH remains available in a separate tab.": "在同一工作区列表中使用 SSH 主机上的 DSH。连接后可直接打开远端会话，也可在独立标签页中打开原始 DSH 界面。",
+      "Checking environment": "正在检查环境",
+      "Installing DSH": "正在安装 DSH",
+      "Stopping managed DSH": "正在停止托管的 DSH",
+      "Synchronizing plugins": "正在同步插件",
+      "Starting DSH": "正在启动 DSH",
+      "Verifying remote DSH": "正在验证远端 DSH",
+      "Remote host {name}": "远端主机 {name}",
+      "Remote dsh {name}": "远端 DSH {name}",
+      "Open {name}": "打开 {name}",
+      "{n} Host": "{n} 台主机",
+      "{n} Hosts": "{n} 台主机",
+      "remote bridge closed": "远端桥接连接已关闭",
+      "remote bridge for {name} is not ready": "远端主机 {name} 的桥接连接尚未就绪",
+      "remote bridge for {name} does not support {method}": "远端主机 {name} 的桥接连接不支持 {method}"
+    }
+    const remoteEn = Object.fromEntries(Object.keys(remoteZh).map(key => [key, key]))
+    let localeService
+    let remoteTranslate = (key, args) => interpolateLocale(key, args)
+    let workspaceTranslate = (key, args) => interpolateLocale(OfficialWorkspace.en[key] ?? key, args)
+    function interpolateLocale(text, args) {
+      return text.replace(/\{(\w+)\}/g, (match, name) => args && name in args ? String(args[name]) : match)
+    }
+    function remoteT(key, args) { return remoteTranslate(key, args) }
+    function useRemoteLocale() {
+      useSyncExternalStore(localeService.subscribe, localeService.getSnapshot)
+      return remoteT
+    }
+    function installRemoteLocale(ctx) {
+      ctx.effect(() => {
+        const locale = ctx.locale
+        const disposeRemote = locale.register(REMOTE_LOCALE_NS, { zh: remoteZh, en: remoteEn })
+        const disposeWorkspace = locale.register(WORKSPACE_LOCALE_NS, { zh: OfficialWorkspace.zh, en: OfficialWorkspace.en })
+        // LocaleFace methods use their receiver; React calls store callbacks bare.
+        localeService = {
+          subscribe: listener => locale.subscribe(listener),
+          getSnapshot: () => locale.getSnapshot(),
+        }
+        remoteTranslate = locale.bind(REMOTE_LOCALE_NS)
+        workspaceTranslate = locale.bind(WORKSPACE_LOCALE_NS)
+        return () => { disposeWorkspace(); disposeRemote() }
+      }, 'dsh-ssh-workspace: language dictionaries')
+    }
     const LOCAL_SOURCE_ID = 'local'
     const ACTIVE_CHANGED = 'dsh-remote-desktop/active-changed'
     const BRIDGE_PROTOCOL_VERSION = 1
@@ -3018,7 +3113,7 @@ window.__ModuleLoader__.load({
     const useRemote = (selector) => useSyncExternalStore(store.subscribe, () => selector(store.getSnapshot()))
     const remoteBridges = new Map()
 
-    function closeRemoteBridge(sourceId, reason = new Error('remote bridge closed')) {
+    function closeRemoteBridge(sourceId, reason = new Error(remoteT('remote bridge closed'))) {
       const bridge = remoteBridges.get(sourceId)
       if (bridge === undefined) return
       remoteBridges.delete(sourceId)
@@ -3089,8 +3184,8 @@ window.__ModuleLoader__.load({
 
     async function remoteRpc(sourceId, method, payload = {}, signal) {
       const bridge = remoteBridges.get(sourceId)
-      if (bridge === undefined || !bridge.ready) throw new Error(`remote bridge for ${sourceId} is not ready`)
-      if (!bridge.capabilities.has(method)) throw new Error(`remote bridge for ${sourceId} does not support ${method}`)
+      if (bridge === undefined || !bridge.ready) throw new Error(remoteT('remote bridge for {name} is not ready', { name: sourceId }))
+      if (!bridge.capabilities.has(method)) throw new Error(remoteT('remote bridge for {name} does not support {method}', { name: sourceId, method }))
       if (signal?.aborted) throw signal.reason || new Error('remote request aborted')
       const requestId = globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`
       return await new Promise((resolve, reject) => {
@@ -3144,7 +3239,7 @@ window.__ModuleLoader__.load({
       const homePath = String(home || '')
       if (homePath !== '' && (current === homePath || current.startsWith(`${homePath}/`))) {
         const relative = current === homePath ? [] : current.slice(homePath.length + 1).split('/').filter(Boolean)
-        const items = [{ label: 'Home', path: homePath }]
+        const items = [{ label: remoteT('Home'), path: homePath }]
         const base = pathSegments(homePath)
         relative.forEach((part, index) => items.push({ label: part, path: joinPosix([...base, ...relative.slice(0, index + 1)]) }))
         return items
@@ -3211,13 +3306,13 @@ window.__ModuleLoader__.load({
       const archived = new Set(snapshot.workspaces?.archivedSessionIds || [])
       return (snapshot.workspaces?.items || []).map(ws => ({
         ...ws,
-        title: ws.title || ws.path || 'Workspace',
+        title: ws.title || ws.path || remoteT('Workspace'),
         sessions: (ws.sessionIds || []).filter(id => !archived.has(id)).map(id => byId.get(id)).filter(Boolean),
       }))
     }
 
     function titleOfSession(row) {
-      return row?.displayTitle || row?.title || row?.projections?.values?.title || row?.cwd?.split(/[\\/]/).pop() || row?.sessionId || 'Untitled session'
+      return row?.displayTitle || row?.title || row?.projections?.values?.title || row?.cwd?.split(/[\\/]/).pop() || row?.sessionId || remoteT('Untitled session')
     }
 
     function sessionUpdatedAt(row) {
@@ -3312,10 +3407,7 @@ window.__ModuleLoader__.load({
       return { sourceId: rest.slice(0, split), id: rest.slice(split + REMOTE_ID_SEPARATOR.length) }
     }
     function workspaceT(key, args = {}) {
-      const table = OfficialWorkspace.en || {}
-      let text = table[key] || key
-      for (const [name, value] of Object.entries(args)) text = text.replaceAll(`{${name}}`, String(value))
-      return text
+      return workspaceTranslate(key, args)
     }
     function officialSessionSummary(row, id, sourceKind, sourceId, rawSessionId, remoteMarker) {
       const projectionValues = row.projectionValues || row.projections?.values
@@ -3340,6 +3432,7 @@ window.__ModuleLoader__.load({
       }
     }
     function OfficialWorkspaceForkBrowser(props) {
+      useRemoteLocale()
       const remote = useRemote(s => s)
       const [addAnchor, setAddAnchor] = useState(null)
       const addButtonRef = useMemo(() => ({ current: addAnchor }), [addAnchor])
@@ -3409,7 +3502,7 @@ window.__ModuleLoader__.load({
                 sourceKind: 'remote',
                 sourceId: source.id,
                 remoteMarker: { id: source.id, label: source.label, state: source.state || 'connected', color: remoteHostColor(source.id) },
-                title: ws.title || ws.path || 'Workspace',
+                title: ws.title || ws.path || remoteT("Workspace"),
                 createdAt: ws.createdAt || new Date(0).toISOString(),
                 sessionIds: (ws.sessions || []).map(row => rowSessionId(row)).filter(Boolean).map(id => remoteKey(source.id, id)),
               })
@@ -3504,10 +3597,10 @@ window.__ModuleLoader__.load({
             const remoteId = decodeWorkspace(workspaceId)
             const beforeRemoteId = decodeWorkspace(beforeWorkspaceId)
             if (remoteId) {
-              if (beforeWorkspaceId !== undefined && beforeRemoteId?.sourceId !== remoteId.sourceId) throw new Error('Cannot reorder remote workspaces across sources')
+              if (beforeWorkspaceId !== undefined && beforeRemoteId?.sourceId !== remoteId.sourceId) throw new Error(remoteT('Cannot reorder remote workspaces across sources'))
               await insertRemoteWorkspaceBefore(remoteId.sourceId, remoteId.id, beforeRemoteId?.id)
             } else if (beforeRemoteId === null) await props.insertWorkspaceBefore?.(workspaceId, beforeWorkspaceId)
-            else throw new Error('Cannot reorder local workspaces into a remote source')
+            else throw new Error(remoteT('Cannot reorder local workspaces into a remote source'))
           },
           archiveSession: async sessionId => {
             const remoteId = decodeSession(sessionId)
@@ -3519,7 +3612,7 @@ window.__ModuleLoader__.load({
             const sessionRemoteId = decodeSession(sessionId)
             const beforeRemoteId = decodeSession(beforeSessionId)
             if (workspaceRemoteId || sessionRemoteId || beforeRemoteId) {
-              if (!workspaceRemoteId || !sessionRemoteId || workspaceRemoteId.sourceId !== sessionRemoteId.sourceId || (beforeSessionId !== undefined && beforeRemoteId?.sourceId !== workspaceRemoteId.sourceId)) throw new Error('Cannot reorder sessions across sources')
+              if (!workspaceRemoteId || !sessionRemoteId || workspaceRemoteId.sourceId !== sessionRemoteId.sourceId || (beforeSessionId !== undefined && beforeRemoteId?.sourceId !== workspaceRemoteId.sourceId)) throw new Error(remoteT('Cannot reorder sessions across sources'))
               await insertRemoteSessionBefore(workspaceRemoteId.sourceId, workspaceRemoteId.id, sessionRemoteId.id, beforeRemoteId?.id)
             } else await props.insertSessionBefore?.(workspaceId, sessionId, beforeSessionId)
           },
@@ -3536,6 +3629,7 @@ window.__ModuleLoader__.load({
     }
 
     function WorkspaceAddSplitter(props) {
+      useRemoteLocale()
       const remote = useRemote(s => s)
       const localWorkspaces = props.useWorkspaces(s => s.items)
       const [splitterOpen, setSplitterOpen] = useState(false)
@@ -3562,17 +3656,17 @@ window.__ModuleLoader__.load({
       const menuItems = [
         ...localWorkspaces.map(ws => ({
           id: `local:${ws.workspaceId}`,
-          label: ws.title || ws.path || 'Workspace',
+          label: ws.title || ws.path || remoteT("Workspace"),
           icon: h(IconFolderCloseRegular, { size: 16 }),
         })),
         ...(remoteWorkspaceRows.length > 0 ? [{ type: 'separator', id: 'remote-separator' }] : []),
         ...remoteWorkspaceRows.map(({ source, workspace }) => ({
           id: `remote:${source.id}:${workspace.workspaceId}`,
-          label: h('span', { className: 'rd-hostButtonLabel' }, workspace.title || workspace.path || 'Workspace'),
+          label: h('span', { className: 'rd-hostButtonLabel' }, workspace.title || workspace.path || remoteT("Workspace")),
           icon: h(IconFolderCloseRegular, { size: 16 }),
         })),
       ]
-      const footerItems = [{ id: 'add-workspace', label: 'Add workspace…', icon: h(IconProjectAddOutlineRegular, { size: 16 }) }]
+      const footerItems = [{ id: 'add-workspace', label: remoteT("Add workspace…"), icon: h(IconProjectAddOutlineRegular, { size: 16 }) }]
       // Picker rows use source-qualified ids so local and remote Workspace ids
       // cannot collide. The conversation owner still reports its local
       // selection as the raw Workspace id, so qualify it before handing it to
@@ -3680,34 +3774,35 @@ window.__ModuleLoader__.load({
         h(Modal, {
           open: splitterOpen,
           onClose: () => setSplitterOpen(false),
-          title: 'Add workspace',
-          closeLabel: 'Close',
-          description: 'Choose where the workspace should live.',
-          footer: h(Button, { variant: 'outline', onClick: () => setSplitterOpen(false) }, 'Cancel'),
+          title: remoteT("Add workspace"),
+          closeLabel: remoteT("Close"),
+          description: remoteT("Choose where the workspace should live."),
+          footer: h(Button, { variant: 'outline', onClick: () => setSplitterOpen(false) }, remoteT("Cancel")),
         },
           h('div', { className: 'rd-addChoiceGrid', 'data-rd-add-workspace-splitter': 'true' },
             h('button', { type: 'button', className: 'rd-addChoice', onClick: openLocalFlow, 'data-rd-add-local': 'true' },
               h('span', { className: 'rd-addChoiceIcon' }, h(IconFolderOpenOutlineRegular, { size: 16 })),
               h('span', null,
-                h('span', { className: 'rd-addChoiceTitle' }, 'Local workspace'),
-                h('span', { className: 'rd-addChoiceDesc' }, 'Use the official picker for this DSH instance.')
+                h('span', { className: 'rd-addChoiceTitle' }, remoteT("Local workspace")),
+                h('span', { className: 'rd-addChoiceDesc' }, remoteT("Use the official picker for this DSH instance."))
               )
             ),
             h('button', { type: 'button', className: 'rd-addChoice', onClick: openRemoteFlow, 'data-rd-add-remote': 'true' },
               h('span', { className: 'rd-addChoiceIcon' }, h(IconProjectAddOutlineRegular, { size: 16 })),
               h('span', null,
-                h('span', { className: 'rd-addChoiceTitle' }, 'Remote workspace'),
-                h('span', { className: 'rd-addChoiceDesc' }, isRemoteDesktopIframe() ? 'Ask the main host to create one on a connected remote.' : 'Create one on a connected remote host.')
+                h('span', { className: 'rd-addChoiceTitle' }, remoteT("Remote workspace")),
+                h('span', { className: 'rd-addChoiceDesc' }, isRemoteDesktopIframe() ? remoteT("Ask the main host to create one on a connected remote.") : remoteT("Create one on a connected remote host."))
               )
             )
           ),
-          message && h('div', { className: 'rd-addError', role: 'alert' }, message)
+          message && h('div', { className: 'rd-addError', role: 'alert' }, remoteT(message))
         ),
         props.renderSlot && props.renderSlot(props.directoryFlowSlot || 'dsh-ssh-workspace.hero.directoryFlow', localFlowOwner)
       )
     }
 
     function RemoteSetupModal() {
+      useRemoteLocale()
       const remote = useRemote(s => s)
       const [hostId, setHostId] = useState('')
       const [busy, setBusy] = useState(false)
@@ -3780,28 +3875,28 @@ window.__ModuleLoader__.load({
         }
       }
       const hostItems = connected.length === 0
-        ? [{ id: 'no-host', label: 'No connected hosts', disabled: true }]
+        ? [{ id: 'no-host', label: remoteT("No connected hosts"), disabled: true }]
         : connected.map(source => ({ id: source.id, label: source.label }))
       const breadcrumbs = remoteBreadcrumbs(browse.path, browse.home)
       const browseBusy = browse.status === 'loading'
       return h(Modal, {
         open,
         onClose: () => close('cancelled'),
-        title: 'Add remote workspace',
-        closeLabel: 'Close',
-        description: 'Choose a connected host and browse to the remote folder to use as a workspace.',
+        title: remoteT("Add remote workspace"),
+        closeLabel: remoteT("Close"),
+        description: remoteT("Choose a connected host and browse to the remote folder to use as a workspace."),
         footer: h(React.Fragment, null,
-          h(Button, { variant: 'outline', disabled: busy, onClick: () => close('cancelled') }, 'Cancel'),
-          h(Button, { variant: 'primary', disabled: busy || browseBusy || connected.length === 0 || browse.path === '', onClick: () => void submit(), 'data-rd-add-workspace-submit': 'true' }, busy ? 'Adding…' : 'Create workspace here')
+          h(Button, { variant: 'outline', disabled: busy, onClick: () => close('cancelled') }, remoteT("Cancel")),
+          h(Button, { variant: 'primary', disabled: busy || browseBusy || connected.length === 0 || browse.path === '', onClick: () => void submit(), 'data-rd-add-workspace-submit': 'true' }, busy ? remoteT("Adding…") : remoteT("Create workspace here"))
         ),
       },
         h('div', { 'data-rd-remote-workspace-setup': 'true', 'data-rd-remote-directory-picker': 'true' },
           h('div', { className: 'rd-setupField' },
-            h('div', { className: 'rd-setupLabel' }, 'Host'),
+            h('div', { className: 'rd-setupLabel' }, remoteT("Host")),
             h(Menu, {
               open: hostMenuOpen,
               anchor: h(Button, { variant: 'outline', className: 'rd-hostButton', disabled: busy || connected.length === 0, onClick: () => setHostMenuOpen(value => !value) },
-                h('span', { className: 'rd-hostButtonLabel' }, selected?.label || 'No connected hosts'),
+                h('span', { className: 'rd-hostButtonLabel' }, selected?.label || remoteT("No connected hosts")),
                 h(IconChevronDownOutlineRegular, { size: 14 })
               ),
               items: hostItems,
@@ -3810,7 +3905,7 @@ window.__ModuleLoader__.load({
               onClose: () => setHostMenuOpen(false),
             })
           ),
-          connected.length === 0 && h('div', { className: 'rd-setupHint' }, 'Connect a host in Settings → Remote Desktop before creating a remote workspace.'),
+          connected.length === 0 && h('div', { className: 'rd-setupHint' }, remoteT("Connect a host in Settings → Remote Desktop before creating a remote workspace.")),
           connected.length > 0 && h('div', { className: 'rd-browsePanel' },
             h('div', { className: 'rd-browseToolbar' },
               h('div', { className: 'rd-breadcrumbs', 'data-rd-remote-breadcrumbs': 'true' },
@@ -3819,15 +3914,15 @@ window.__ModuleLoader__.load({
                   h('button', { type: 'button', className: 'rd-breadcrumbButton', disabled: busy || browseBusy, title: item.path, onClick: () => browseTo(item.path), 'data-rd-breadcrumb-path': item.path }, item.label)
                 ))
               ),
-              h(Button, { variant: showHidden ? 'primary' : 'outline', className: 'rd-hiddenToggle', disabled: busy || browseBusy, onClick: () => { const next = !showHidden; setShowHidden(next); browseTo(browse.path || undefined, next) }, 'data-rd-show-hidden': showHidden ? 'true' : 'false' }, 'Show hidden')
+              h(Button, { variant: showHidden ? 'primary' : 'outline', className: 'rd-hiddenToggle', disabled: busy || browseBusy, onClick: () => { const next = !showHidden; setShowHidden(next); browseTo(browse.path || undefined, next) }, 'data-rd-show-hidden': showHidden ? 'true' : 'false' }, remoteT("Show hidden"))
             ),
             h('div', { className: 'rd-directoryList', 'data-rd-remote-directory-list': 'true' },
-              browseBusy && h('div', { className: 'rd-browseStatus', role: 'status' }, 'Loading remote folders…'),
+              browseBusy && h('div', { className: 'rd-browseStatus', role: 'status' }, remoteT("Loading remote folders…")),
               browse.status === 'error' && h('div', { className: 'rd-browseStatus rd-browseStatusError', role: 'alert' },
-                h('div', null, browse.error || 'Cannot read this directory.'),
-                h(Button, { variant: 'outline', disabled: busy, onClick: () => browseTo(browse.path || undefined), 'data-rd-browse-retry': 'true' }, 'Retry')
+                h('div', null, remoteT(browse.error || 'Cannot read this directory.')),
+                h(Button, { variant: 'outline', disabled: busy, onClick: () => browseTo(browse.path || undefined), 'data-rd-browse-retry': 'true' }, remoteT("Retry"))
               ),
-              browse.status === 'ready' && browse.entries.length === 0 && h('div', { className: 'rd-browseStatus' }, 'No folders in this directory.'),
+              browse.status === 'ready' && browse.entries.length === 0 && h('div', { className: 'rd-browseStatus' }, remoteT("No folders in this directory.")),
               browse.status === 'ready' && browse.entries.map(entry => h('button', { key: entry.path, type: 'button', className: 'rd-directoryRow', disabled: busy, onClick: () => browseTo(entry.path), 'data-rd-directory-path': entry.path },
                 h(IconFolderCloseRegular, { size: 16 }),
                 h('span', { className: 'rd-directoryName' }, entry.name)
@@ -3835,11 +3930,12 @@ window.__ModuleLoader__.load({
             )
           ),
           browse.path && h('div', { className: 'rd-currentPath', 'data-rd-selected-remote-path': browse.path }, browse.path),
-          error && h('div', { className: 'rd-addError', role: 'alert' }, error)
+          error && h('div', { className: 'rd-addError', role: 'alert' }, remoteT(error))
         )
       )
     }
     function RemoteOverlay() {
+      useRemoteLocale()
       const remote = useRemote(s => s)
       const { sources, active, pendingOpen, companionReady } = remote
       const [left, setLeftState] = useState(0)
@@ -3931,7 +4027,7 @@ window.__ModuleLoader__.load({
           src: withParent(s.iframeUrl),
           style: { ...styles.iframe, display: source?.id === s.id ? 'block' : 'none' },
           'data-rd-frame-source-id': s.id,
-          title: `Remote dsh ${s.label}`,
+          title: remoteT('Remote dsh {name}', { name: s.label }),
         })),
       )
       return h(React.Fragment, null, overlay, h(RemoteSetupModal, null))
@@ -3954,6 +4050,7 @@ window.__ModuleLoader__.load({
 
 
     function SettingsSection() {
+      useRemoteLocale()
       const sources = useRemote(s => s.sources)
       const [pendingHost, setPendingHost] = useState(null)
       const [feedback, setFeedback] = useState(null)
@@ -3974,17 +4071,17 @@ window.__ModuleLoader__.load({
         window.open(nativeUrl, '_blank', 'noopener,noreferrer')
       }
       return h('section', { className: 'rd-settingsSection', 'data-rd-settings-section': 'true' },
-        h('h2', { className: 'rd-settingsTitle' }, 'Remote Desktop'),
-        h('p', { className: 'rd-settingsIntro' }, 'Use DSH on SSH Hosts from the same Workspace browser. Connected Hosts open in place; native DSH remains available in a separate tab.'),
+        h('h2', { className: 'rd-settingsTitle' }, remoteT("Remote Desktop")),
+        h('p', { className: 'rd-settingsIntro' }, remoteT("Use DSH on SSH Hosts from the same Workspace browser. Connected Hosts open in place; native DSH remains available in a separate tab.")),
         h('div', { className: 'rd-settingsHeadingRow' },
-          h('h3', { className: 'rd-settingsHeading' }, 'SSH Hosts'),
-          h('span', { className: 'rd-settingsCount' }, `${sources.length} ${sources.length === 1 ? 'Host' : 'Hosts'}`)
+          h('h3', { className: 'rd-settingsHeading' }, remoteT("SSH Hosts")),
+          h('span', { className: 'rd-settingsCount' }, remoteT(sources.length === 1 ? '{n} Host' : '{n} Hosts', { n: sources.length }))
         ),
-        sources.length === 0 && h('div', { className: 'rd-settingsEmpty' }, 'No concrete Host entries were found in ~/.ssh/config.'),
+        sources.length === 0 && h('div', { className: 'rd-settingsEmpty' }, remoteT("No concrete Host entries were found in ~/.ssh/config.")),
         h('div', { className: 'rd-settingsHosts' }, sources.map(source => {
           const connected = source.state === 'connected'
           const busy = pendingHost === source.id
-          const stateText = connected ? 'Connected' : source.state === 'connecting' ? (source.setupStage || 'Connecting') : source.state === 'error' ? 'Connection failed' : 'Not connected'
+          const stateText = connected ? remoteT("Connected") : source.state === 'connecting' ? remoteT(source.setupStage || 'Connecting') : source.state === 'error' ? remoteT("Connection failed") : remoteT("Not connected")
           const dotState = connected ? 'done' : source.state === 'connecting' ? 'ongoing' : source.state === 'error' ? 'error' : 'warning'
           const address = [source.sshUser, source.sshHost].filter(Boolean).join('@') || source.sshAlias || source.id
           return h('article', { key: source.id, className: 'rd-settingsHost', 'data-rd-settings-source-id': source.id },
@@ -3998,17 +4095,17 @@ window.__ModuleLoader__.load({
                 stateText
               )
             ),
-            source.error && h('p', { className: 'rd-settingsFeedback rd-settingsFeedbackError', role: 'alert' }, source.error),
-            feedback?.id === source.id && h('p', { className: `rd-settingsFeedback${feedback.tone === 'error' ? ' rd-settingsFeedbackError' : ''}`, role: feedback.tone === 'error' ? 'alert' : 'status' }, feedback.text),
+            source.error && h('p', { className: 'rd-settingsFeedback rd-settingsFeedbackError', role: 'alert' }, remoteT(source.error)),
+            feedback?.id === source.id && h('p', { className: `rd-settingsFeedback${feedback.tone === 'error' ? ' rd-settingsFeedbackError' : ''}`, role: feedback.tone === 'error' ? 'alert' : 'status' }, remoteT(feedback.text)),
             h('div', { className: 'rd-settingsActions' },
               connected
-                ? h(Button, { variant: 'primary', disabled: busy || !source.iframeUrl, 'data-rd-settings-open-native': source.id, onClick: () => openNative(source) }, `Open ${source.label}`)
-                : h(Button, { variant: 'primary', disabled: busy, 'data-rd-settings-connect': source.id, onClick: () => void connect(source.id) }, busy ? 'Connecting…' : 'Connect'),
-              connected && h(Button, { variant: 'outline', disabled: busy, 'data-rd-settings-disconnect': source.id, onClick: () => void disconnect(source.id) }, busy ? 'Disconnecting…' : 'Disconnect')
+                ? h(Button, { variant: 'primary', disabled: busy || !source.iframeUrl, 'data-rd-settings-open-native': source.id, onClick: () => openNative(source) }, remoteT('Open {name}', { name: source.label }))
+                : h(Button, { variant: 'primary', disabled: busy, 'data-rd-settings-connect': source.id, onClick: () => void connect(source.id) }, busy ? remoteT("Connecting…") : remoteT("Connect")),
+              connected && h(Button, { variant: 'outline', disabled: busy, 'data-rd-settings-disconnect': source.id, onClick: () => void disconnect(source.id) }, busy ? remoteT("Disconnecting…") : remoteT("Disconnect"))
             ),
             connected && source.iframeUrl
               ? h('a', { className: 'rd-settingsNativeUrl', href: nativeRemoteUrl(source.iframeUrl), target: '_blank', rel: 'noopener noreferrer', 'data-rd-settings-native-link': 'true' }, nativeRemoteUrl(source.iframeUrl))
-              : h('div', { className: 'rd-settingsNativeUrl', 'data-rd-settings-native-placeholder': 'true' }, 'Connect to create a forwarded DSH Web URL for this Host.')
+              : h('div', { className: 'rd-settingsNativeUrl', 'data-rd-settings-native-placeholder': 'true' }, remoteT("Connect to create a forwarded DSH Web URL for this Host."))
           )
         }))
       )
@@ -4025,6 +4122,7 @@ window.__ModuleLoader__.load({
     }
 
     exports.apply = function apply(ctx) {
+      installRemoteLocale(ctx)
       const iframeMode = isRemoteDesktopIframe()
       const sessions = ctx.get('sessions')
       const workspaces = ctx.get('workspaces')
@@ -4143,7 +4241,7 @@ window.__ModuleLoader__.load({
         name: 'settings.section',
         id: 'remote-desktop',
         order: 80,
-        label: 'Remote Desktop',
+        label: () => remoteT('Remote Desktop'),
       }, SettingsSection))
     }
 

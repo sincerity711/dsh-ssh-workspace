@@ -8,6 +8,7 @@ const builds = [
     inputs: [
       'packages/local/src/client/00-loader.part.js',
       'packages/local/src/client/10-official-workspace.part.js',
+      'packages/local/src/client/15-locale.part.js',
       'packages/local/src/client/20-store-bridge.part.js',
       'packages/local/src/client/30-workspace-ui.part.js',
       'packages/local/src/client/40-overlay-settings.part.js',

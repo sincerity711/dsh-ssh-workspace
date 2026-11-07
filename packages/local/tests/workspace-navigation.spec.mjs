@@ -54,7 +54,7 @@ test('workspace UI reuses native navigation and mirrors directory flows with sco
   }
   const exports = {}
   vm.runInNewContext(source.slice(0, source.indexOf('    const styles =')), {
-    exports, window: {}, store: { getSnapshot() {}, subscribe() {}, listSources() {}, getActive() {} },
+    installRemoteLocale() {}, remoteT: key => key, exports, window: {}, store: { getSnapshot() {}, subscribe() {}, listSources() {}, getActive() {} },
     remoteBridges: new Map(), closeRemoteBridge() {}, isRemoteDesktopIframe: () => false,
     OfficialWorkspace: { createWorkspaceViewStore: () => ({ create: () => ({ actions: {} }) }), UiWorkspaceService() { assert.fail('native service must not be replaced') } },
     WorkspaceAddSplitter() {}, OfficialWorkspaceForkBrowser() {}, RemoteOverlay() {}, SettingsSection() {},

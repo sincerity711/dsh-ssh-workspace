@@ -10,6 +10,7 @@
     }
 
     exports.apply = function apply(ctx) {
+      installRemoteLocale(ctx)
       const iframeMode = isRemoteDesktopIframe()
       const sessions = ctx.get('sessions')
       const workspaces = ctx.get('workspaces')
@@ -128,7 +129,7 @@
         name: 'settings.section',
         id: 'remote-desktop',
         order: 80,
-        label: 'Remote Desktop',
+        label: () => remoteT('Remote Desktop'),
       }, SettingsSection))
     }
 
